@@ -376,7 +376,6 @@
           } else {
             stageWidth = Math.round(height * lwf['width'] / lwf['height']);
             stageHeight = Math.round(height);
-
           }
 
           stageEventReceiver.style.width = stage.style.width = stageWidth + 'px';
@@ -435,26 +434,27 @@
         }
 
         var touchX, touchY;
+        var stageRect = stage.getBoundingClientRect();
 
         if (isTouchEventEnabled) {
           var myTouch = myEvent.touches[0];
           touchX = myTouch.pageX;
           touchY = myTouch.pageY;
         } else {
-          touchX = myEvent.clientX;
-          touchY = myEvent.clientY;
+          touchX = myEvent.offsetX;
+          touchY = myEvent.offsetY;
         }
 
-        if (!isSp) {
-          touchX += document.body.scrollLeft + document.documentElement.scrollLeft - stage.offsetLeft;
-          touchY += document.body.scrollTop + document.documentElement.scrollTop - stage.offsetTop;
-        } else {
+        if (isSp) {
           touchX -= stage.offsetLeft;
           touchY -= stage.offsetTop;
+          touchX = touchX - stageRect.left - window.scrollX;
+          touchY = touchY - stageRect.top - window.scrollY;
         }
 
         touchX /= stageScale;
         touchY /= stageScale;
+
         lwf.inputPoint(touchX, touchY);
       } catch (myException) {
         loader.handleException_(myException, loaderDataBelongToLwfInstance);
@@ -475,26 +475,27 @@
         }
 
         var touchX, touchY;
+        var stageRect = stage.getBoundingClientRect();
 
         if (isTouchEventEnabled) {
           var myTouch = myEvent.touches[0];
           touchX = myTouch.pageX;
           touchY = myTouch.pageY;
         } else {
-          touchX = myEvent.clientX;
-          touchY = myEvent.clientY;
+          touchX = myEvent.offsetX;
+          touchY = myEvent.offsetY;
         }
 
-        if (!isSp) {
-          touchX += document.body.scrollLeft + document.documentElement.scrollLeft - stage.offsetLeft;
-          touchY += document.body.scrollTop + document.documentElement.scrollTop - stage.offsetTop;
-        } else {
+        if (isSp) {
           touchX -= stage.offsetLeft;
           touchY -= stage.offsetTop;
+          touchX = touchX - stageRect.left - window.scrollX;
+          touchY = touchY - stageRect.top - window.scrollY;
         }
 
         touchX /= stageScale;
         touchY /= stageScale;
+
         lwf.inputPoint(touchX, touchY);
         lwf.inputPress();
       } catch (myException) {
@@ -874,7 +875,7 @@
     var stageEventReceiver = null;
     if (isSp) {
       stageEventReceiver = document.createElement('div');
-      stageEventReceiver.style.position = pos['position'];
+      stageEventReceiver.style.position = 'absolute';
       stageEventReceiver.style.top = pos['top'] + 'px';
       stageEventReceiver.style.left = pos['left'] + 'px';
       stageEventReceiver.style.zIndex = stage.style.zIndex + 1;
