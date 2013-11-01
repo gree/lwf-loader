@@ -193,62 +193,18 @@
   };
 
   /**
-   * replace path by path stored in imageHashMap,
-   * private function used in getImageMapper_() function
-   * @param {object} imageHashMap image hash mapping data
-   * @param {string} imagePath path to replace
-   * @return {string} replaced path
-   * @private
-   */
-  var replaceByImageMap_ = function(imageHashMap, imagePath) {
-    if (imageHashMap[imagePath]) {
-      imagePath = imageHashMap[imagePath];
-      return imagePath;
-    }
-    return null;
-  };
-
-  /**
    * returns function that gets the path corresponding to the input image
    * @param {object} imageMap image map data
-   * @param {string} imageVersion specifies image version used in the LWF
    * @return {Function} function to replace path by maps
    * @private
    */
-  LwfLoader.prototype.getImageMapper_ = function(imageMap, imageVersion) {
+  LwfLoader.prototype.getImageMapper_ = function(imageMap) {
     if (_.isFunction(imageMap)) {
       return imageMap;
     }
 
-    var versionToken = imageVersion ? ('?' + imageVersion) : '';
-    var isLwfsEnvironment = this.isLwfsEnvironment_();
-
     return function(pImageId) {
-      var path = pImageId;
-      var tReplacedPath = replaceByImageMap_(imageMap, path);
-      if (tReplacedPath !== null) {
-        return tReplacedPath;
-      }
-
-      if (isLwfsEnvironment) {
-        return path;
-      }
-
-      /** by default image name starts with lwf_ will be placed under directory says lwf */
-      if (path.indexOf('lwf_') === 0) {
-        var lwfInput = this['lwf'];
-        var prefix = lwfInput.slice(0, lwfInput.lastIndexOf('/') + 1);
-        path = 'lwf/' + prefix + path;
-      } else if (path.indexOf('param_') === 0) {
-        /** by default imageMap setting is required for image starts with name param_ */
-        console.error('[LWF] error: no imageMap setting for %s, use dummy image.', path);
-        path = 'lwf/dummy.png';
-      } else {
-        /** by default other image with name aa_bb_cc.png will be parsed into format aa/bb/cc.png*/
-        path = path.replace(/_/g, '/');
-      }
-
-      return versionToken ? (path + versionToken) : path;
+      return imageMap[pImageId] ? imageMap[pImageId] : pImageId;
     };
   };
 
@@ -680,9 +636,6 @@
     /** web worker setting, only available on Chrome or non-Android devices*/
     myLwfParam['worker'] = useWebWorker;
 
-    /** for controlling version of used images */
-    myLwfParam['imageVersion'] = targetElem.getAttribute('data-lwf-image_version');
-
     /** handle buggy css behaviour in certain devices */
     if (isAndroid && / SC-0/.test(userAgent) && lwfRenderer === 'useWebkitCSSRenderer') {
       myLwfParam['quirkyClearRect'] = true;
@@ -807,7 +760,8 @@
       myLwfParam['privateData']['lwfLoader'] = this; /* pass loader object to LWF */
     }
 
-    myLwfParam['imageMap'] = this.getImageMapper_(myLwfParam['imageMap'], myLwfParam.imageVersion);
+    myLwfParam['imageMap'] = this.getImageMapper_(myLwfParam['imageMap']);
+
     if (!_.isEmpty(myLwfParam['soundMap'])) {
       loaderDataBelongToLwfInstance['soundMap'] = myLwfParam['soundMap'];
     }
@@ -956,7 +910,7 @@
       lwfParam['active'] = false;
 
       if (imageMap) {
-        lwfParam['imageMap'] = this.getImageMapper_(imageMap, lwfParam.imageVersion);
+        lwfParam['imageMap'] = this.getImageMapper_(imageMap);
       }
       if (privateData) {
         lwfParam['privateData'] = privateData;
@@ -1017,7 +971,7 @@
       lwfParam['active'] = false;
 
       if (imageMap) {
-        lwfParam['imageMap'] = this.getImageMapper_(imageMap, lwfParam['imageVersion']);
+        lwfParam['imageMap'] = this.getImageMapper_(imageMap);
       }
       if (privateData) {
         privateData['_loaderData'] = loaderDataBelongToLwfInstance;
