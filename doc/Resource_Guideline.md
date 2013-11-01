@@ -6,22 +6,8 @@ lwf-loader.js リソースガイドライン
 デフォルトの状態でのリソースは以下の状態のように配置することを想定しています。
 
 * 画像の配置
-    * リンケージ名を、`lwf_<lwf id>_foo.jpg` のように設定する
-    * `lwf/<lwf id>/` 以下に、 `lwf/<lwf id>/foo.jpg`のように配置
-
-* LWF固有の画像 (texture atlas)
-    * リンケージ名を、`lwf_<lwf id>_atlas.jpg` のように設定する
-    * `lwf/<lwf id>` 以下に、lwf/<lwf id>/atlas.jpgのように配置
-
-* LWFの外で置き換えを想定している画像
-    * リンケージ名を、`param_item_large_1.jpg` のように設定する
-    * `param/` 以下に、`param/***.jpg` のように配置
-    * 例えば上記のリンケージ名のケースなら、`param/item/large/1.jpg` などとする
-    * 連番で指定するようなものは、0から始まるようにする
-
-* LWF外の画像
-    * リンケージ名を、misc_item_1.jpgのように設定する
-    * `/img/misc/item/1.jpg` を参照したい場合は、SWFでは `misc/item/1.jpg` に配置する
+    * LWF再生に必要なすべての画像を`prefix`もしくは`imagePrefix`で指定したディレクトリ内に配置する。
+    * LWFの仕様上、`prefix`のみが定義されていた場合、`imagePrefix`に`prefix`の値が代入される。
 
 
 ### imageMapで画像pathを直接指定する
