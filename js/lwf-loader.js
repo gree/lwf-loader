@@ -28,6 +28,9 @@
   /** @type {string} */
   var lwfResizeMode = 'fitForWidth';
 
+  /** @type {string} */
+  var lwfResizeStretch = false;
+
   /** @type {Object} */
   var rootOffset = {
     x: 0,
@@ -318,11 +321,16 @@
 
         var width = lwf['width'];
         var height = lwf['height'];
-        if (width > global.innerWidth) {
-          width = global.innerWidth;
+
+        /** fix innerWidth/Height for old Android devices */
+        var innerWidth = global.innerWidth <= global.screen.width ? global.innerWidth : global.screen.width;
+        var innerHeight = global.innerHeight <= global.screen.height ? global.innerHeight : global.screen.height;
+
+        if (width > innerWidth || loaderDataBelongToLwfInstance['resizeStretch']) {
+          width = innerWidth;
         }
-        if (height > global.innerHeight) {
-          height = global.innerHeight;
+        if (height > innerHeight || loaderDataBelongToLwfInstance['resizeStretch']) {
+          height = innerHeight;
         }
 
         if (widthInit !== width || heightInit !== height) {
@@ -586,6 +594,7 @@
     var setting = targetElem.getAttribute('data-lwf-setting');
     setting = setting ? JSON.parse(setting) : {};
     lwfResizeMode = setting.resizeMode || lwfResizeMode;
+    lwfResizeStretch = setting.resizeStretch || lwfResizeStretch;
 
     /* prepare LWF renderer */
     var LWF, cache;
@@ -632,6 +641,7 @@
     myLwfParam['fitForHeight'] = false;
     myLwfParam['fitForWidth'] = false;
     myLwfParam[lwfResizeMode] = true;
+    myLwfParam['resizeStretch'] = lwfResizeStretch;
 
     /** web worker setting, only available on Chrome or non-Android devices*/
     myLwfParam['worker'] = useWebWorker;
@@ -734,7 +744,6 @@
     var loaderDataBelongToLwfInstance = {};
     loaderDataBelongToLwfInstance['debugInfoElementId'] = ++debugInfoElementId;
     loaderDataBelongToLwfInstance['setting'] = myLwfParam;
-    loaderDataBelongToLwfInstance['resizeMode'] = lwfResizeMode;
     loaderDataBelongToLwfInstance['loader'] = this;
     loaderDataBelongToLwfInstance['debug'] = false;
     loaderDataBelongToLwfInstance['soundMap'] = null;
@@ -790,6 +799,9 @@
 
     loaderDataBelongToLwfInstance['lwfMap'] = myLwfParam['lwfMap'];
     delete myLwfParam['lwfMap'];
+
+    loaderDataBelongToLwfInstance['resizeStretch'] = myLwfParam['resizeStretch'];
+    delete myLwfParam['resizeStretch'];
 
     if (this.isLwfsEnvironment_()) {
       var lwfPath;
