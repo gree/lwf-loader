@@ -591,16 +591,16 @@
    * @return {*}
    */
   LwfLoader.prototype.playLWF = function(targetElem, lwfParam) {
-    var setting = targetElem.getAttribute('data-lwf-setting');
-    setting = setting ? JSON.parse(setting) : {};
-    lwfResizeMode = setting.resizeMode || lwfResizeMode;
-    lwfResizeStretch = setting.resizeStretch || lwfResizeStretch;
+    var lwfDisplaySetting = targetElem.getAttribute('data-lwf-display_setting');
+    lwfDisplaySetting = lwfDisplaySetting ? JSON.parse(lwfDisplaySetting) : {};
+    lwfResizeMode = lwfDisplaySetting.resizeMode || lwfResizeMode;
+    lwfResizeStretch = lwfDisplaySetting.resizeStretch || lwfResizeStretch;
 
     /* prepare LWF renderer */
     var LWF, cache;
     LWF = global['LWF'];
     if (!lwfRenderer) {
-      lwfRenderer = setting.renderer || global['Utility']['getRenderer']();
+      lwfRenderer = lwfDisplaySetting.renderer || global['Utility']['getRenderer']();
 
       if (lwfRenderer === 'canvas') {
         lwfRenderer = 'useCanvasRenderer';
@@ -615,7 +615,7 @@
       } else {
         throw new Error('Renderer parameters are not properly set');
       }
-    } else if (setting.renderer && (lwfRenderer !== setting.renderer)) {
+    } else if (lwfDisplaySetting.renderer && (lwfRenderer !== lwfDisplaySetting.renderer)) {
       throw new Error('cannot use multiple renderer! LWF has been initialized for ' + lwfRenderer + ' renderer.');
     }
 
@@ -631,8 +631,8 @@
     myLwfParam['onload'] = this.onLoad;
 
     /** background color setting*/
-    if (!_.isUndefined(setting.backgroundColor)) {
-      myLwfParam['setBackgroundColor'] = setting.backgroundColor;
+    if (!_.isUndefined(lwfDisplaySetting.backgroundColor)) {
+      myLwfParam['setBackgroundColor'] = lwfDisplaySetting.backgroundColor;
     } else {
       myLwfParam['useBackgroundColor'] = true;
     }
@@ -676,8 +676,8 @@
           return matched.charAt(1).toUpperCase();
         });
 
-        /** 'data-lwf-setting' is used by global setting */
-        if (lwfParamName === 'setting') {
+        /** 'data-lwf-display_setting' is used by global setting */
+        if (lwfParamName === 'displaySetting') {
           continue;
         }
 
