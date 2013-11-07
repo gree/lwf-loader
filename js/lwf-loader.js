@@ -346,9 +346,15 @@
 
         if (widthInit !== width || heightInit !== height) {
           if (setting['fitForWidth']) {
+            if (setting.widthLimit) {
+              width = (width > setting.widthLimit) ? setting.widthLimit : width;
+            }
             stageWidth = Math.round(width);
             stageHeight = Math.round(width * lwf['height'] / lwf['width']);
           } else {
+            if (setting.heightLimit) {
+              height = (height > setting.heightLimit) ? setting.heightLimit : height;
+            }
             stageWidth = Math.round(height * lwf['width'] / lwf['height']);
             stageHeight = Math.round(height);
           }
@@ -661,6 +667,8 @@
     myLwfParam['fitForWidth'] = false;
     myLwfParam[lwfResizeMode] = true;
     myLwfParam['resizeStretch'] = lwfResizeStretch;
+    myLwfParam['widthLimit'] = lwfDisplaySetting.widthLimit;
+    myLwfParam['heightLimit'] = lwfDisplaySetting.heightLimit;
 
     /** web worker setting, only available on Chrome or non-Android devices*/
     myLwfParam['worker'] = useWebWorker;
