@@ -260,7 +260,7 @@
       if (confirm('LWF load error. \n reload?')) {
         location.reload();
       }
-    }else if (_.isFunction(handler['loadError'])) {
+    } else if (_.isFunction(handler['loadError'])) {
       handler['loadError'](settings, url);
     }
 
@@ -324,10 +324,18 @@
 
         var width = lwf['width'];
         var height = lwf['height'];
+        var innerWidth = global.innerWidth;
+        var innerHeight = global.innerHeight;
 
-        /** fix innerWidth/Height for old Android devices */
-        var innerWidth = global.innerWidth <= global.screen.width ? global.innerWidth : global.screen.width;
-        var innerHeight = global.innerHeight <= global.screen.height ? global.innerHeight : global.screen.height;
+        if (isAndroid) {
+          /** fix innerWidth/Height for old Android devices */
+          if (global.innerWidth > global.screen.width) {
+            innerWidth = global.screen.width;
+          }
+          if (global.innerHeight > global.screen.height) {
+            innerHeight = global.screen.height;
+          }
+        }
 
         if (width > innerWidth || loaderDataBelongToLwfInstance['resizeStretch']) {
           width = innerWidth;
