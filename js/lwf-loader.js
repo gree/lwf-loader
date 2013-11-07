@@ -31,6 +31,9 @@
   /** @type {string} */
   var lwfResizeStretch = false;
 
+  /** @type {string} ID of the div element displaying main LWF object */
+  var lwfDivId = null;
+
   /** @type {Object} */
   var rootOffset = {
     x: 0,
@@ -358,6 +361,13 @@
           }
           widthInit = width;
           heightInit = height;
+
+          /** set the external div size */
+          if (lwfDivId) {
+            var windowDiv = document.getElementById(lwfDivId);
+            windowDiv.style.width = stageWidth + 'px';
+            windowDiv.style.height = stageHeight + 'px';
+          }
         }
 
         var t1 = global.performance.now();
@@ -595,6 +605,7 @@
     lwfDisplaySetting = lwfDisplaySetting ? JSON.parse(lwfDisplaySetting) : {};
     lwfResizeMode = lwfDisplaySetting.resizeMode || lwfResizeMode;
     lwfResizeStretch = lwfDisplaySetting.resizeStretch || lwfResizeStretch;
+    lwfDivId = lwfDisplaySetting.displayDivId || lwfDivId;
 
     /* prepare LWF renderer */
     var LWF, cache;
