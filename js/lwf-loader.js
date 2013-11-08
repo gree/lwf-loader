@@ -108,6 +108,7 @@
     this.pausing = false;
     this.loadingCounter = 0;
     this.debug = false; /* for backward compatibility */
+    this.currentFPS = 0;
     return this;
   }
 
@@ -118,6 +119,17 @@
    */
   LwfLoader.prototype.isLwfsEnvironment_ = function() {
     return global['testlwf_lwf'];
+  };
+
+  /**
+   * return the current FPS
+   * @return {int} current FPS
+   */
+  LwfLoader.prototype.getCurrentFPS = function() {
+    if (isNaN(this.currentFPS)){
+      console.error('[LWF] FPS is not properly defined');
+    }
+    return this.currentFPS;
   };
 
   /**
@@ -393,16 +405,17 @@
         }
 
         global.requestAnimationFrame(onExec);
+        if (execCount % 60 === 0) {
+          fps_num60 = Math.round(60000.0 / (t1 - t0_60));
+          t0_60 = t1;
+          execCount = 0;
+        }
         if (loader.debug || loaderDataBelongToLwfInstance['debug']) {
-          if (execCount % 60 === 0) {
-            fps_num60 = Math.round(60000.0 / (t1 - t0_60));
-            t0_60 = t1;
-            execCount = 0;
-          }
           var divElement = document.getElementById('lwf_info' + loaderDataBelongToLwfInstance['debugInfoElementId']);
           divElement.innerHTML = fps_num60 + 'fps';
-          execCount++;
         }
+        execCount++;
+        loader.currentFPS = fps_num60;
       } catch (myException) {
         loader.handleException_(myException, loaderDataBelongToLwfInstance);
       }
