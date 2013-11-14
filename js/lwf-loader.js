@@ -98,7 +98,13 @@
   }
 
   /**
-   * create LWF loader
+   * create LWF Loader
+   * @class LWF Loader class
+   * @property {object} initializeHooks Hook function lists
+   * @property {boolean} pausing flag
+   * @property {int} loadingCounter counter shows the loading progress
+   * @property {boolean} debug whether displays debug information
+   * @property {int} current running FPS
    * @return {*}
    * @constructor
    */
@@ -1028,6 +1034,14 @@
       if (privateData) {
         privateData['_loaderData'] = loaderDataBelongToLwfInstance;
         lwfParam['privateData'] = privateData;
+
+        if (privateData['prefix']) {
+          lwfParam['prefix'] = privateData['prefix'];
+        }
+
+        if (privateData['imagePrefix']) {
+          lwfParam['imagePrefix'] = privateData['imagePrefix'];
+        }
       }
 
       lwfParam['onload'] = function(childLwf) {
@@ -1039,7 +1053,6 @@
         return myCallback(null, childLwf);
       };
     }
-
     return lwfParam;
   };
 
