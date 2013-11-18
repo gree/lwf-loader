@@ -113,7 +113,7 @@
     this.requests = [];
     this.pausing = false;
     this.loadingCounter = 0;
-    this.debug = false; /* for backward compatibility */
+    this.debug = false;
     this.currentFPS = 0;
     return this;
   }
@@ -668,9 +668,6 @@
     /** prepare LWF parameters */
     var myLwfParam = _.isObject(global['lwfDefaultParam']) ? _.clone(global['lwfDefaultParam']) : {};
 
-    /** whether enables the debugger */
-    myLwfParam['debug'] = myLwfParam['debug'] ? true : false;
-
     /** set load event handler */
     myLwfParam['onload'] = this.onLoad;
 
@@ -801,14 +798,7 @@
     loaderDataBelongToLwfInstance['stageEventReceiver'] = null;
     loaderDataBelongToLwfInstance['lwfMap'] = null;
 
-    /** for backward compatibility */
-    var debugFlag = targetElem.getAttribute('data-debug');
-    if (debugFlag) {
-      myLwfParam['privateData']['debug'] = true;
-    }
-
-    loaderDataBelongToLwfInstance['debug'] = myLwfParam['debug'] ? true : false;
-    delete myLwfParam['debug'];
+    loaderDataBelongToLwfInstance['debug'] = this.debug;
 
     if (!myLwfParam['privateData'].hasOwnProperty('lwfLoader')) {
       /** for backward compatibility */
@@ -898,6 +888,7 @@
     myLwfParam['stage'] = stage;
     loaderDataBelongToLwfInstance['stageEventReceiver'] = stageEventReceiver;
 
+    /** for displaying debug information during runtime */
     if (this.debug || loaderDataBelongToLwfInstance['debug']) {
       var divElement = document.createElement('div');
       divElement.id = 'lwf_info' + debugInfoElementId;
