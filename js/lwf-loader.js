@@ -448,8 +448,8 @@
           touchX = myTouch.pageX;
           touchY = myTouch.pageY;
         } else {
-          touchX = myEvent.offsetX;
-          touchY = myEvent.offsetY;
+          touchX = myEvent.clientX;
+          touchY = myEvent.clientY;
         }
 
         if (isSp) {
@@ -457,6 +457,9 @@
           touchY -= stage.offsetTop;
           touchX = touchX - stageRect.left - window.scrollX;
           touchY = touchY - stageRect.top - window.scrollY;
+        } else {
+          touchX += document.body.scrollLeft + document.documentElement.scrollLeft;
+          touchY += document.body.scrollTop + document.documentElement.scrollTop;
         }
 
         touchX /= stageScale;
@@ -489,8 +492,8 @@
           touchX = myTouch.pageX;
           touchY = myTouch.pageY;
         } else {
-          touchX = myEvent.offsetX;
-          touchY = myEvent.offsetY;
+          touchX = myEvent.clientX;
+          touchY = myEvent.clientY;
         }
 
         if (isSp) {
@@ -498,6 +501,9 @@
           touchY -= stage.offsetTop;
           touchX = touchX - stageRect.left - window.scrollX;
           touchY = touchY - stageRect.top - window.scrollY;
+        } else {
+          touchX += document.body.scrollLeft + document.documentElement.scrollLeft;
+          touchY += document.body.scrollTop + document.documentElement.scrollTop;
         }
 
         touchX /= stageScale;
