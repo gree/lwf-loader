@@ -143,7 +143,7 @@
           myRenderer = 'useWebGLRenderer';
         }
 
-        if (myRenderer === 'useCanvasRenderer' || myRenderer === 'useWebkitCSSRenderer' || myRenderer === 'useWebGLRenderer') {
+        if(myRenderer && myRenderer.match(/use.+Renderer/i)) {
           renderer = myRenderer;
         }
       }
@@ -505,8 +505,8 @@
           touchX = touchX - stageRect.left - window.scrollX;
           touchY = touchY - stageRect.top - window.scrollY;
         } else {
-          touchX += document.body.scrollLeft + document.documentElement.scrollLeft;
-          touchY += document.body.scrollTop + document.documentElement.scrollTop;
+          touchX -= stageRect.left;
+          touchY -= stageRect.top;
         }
 
         touchX /= stageScale;
@@ -549,8 +549,8 @@
           touchX = touchX - stageRect.left - window.scrollX;
           touchY = touchY - stageRect.top - window.scrollY;
         } else {
-          touchX += document.body.scrollLeft + document.documentElement.scrollLeft;
-          touchY += document.body.scrollTop + document.documentElement.scrollTop;
+          touchX -= stageRect.left;
+          touchY -= stageRect.top;
         }
 
         touchX /= stageScale;
@@ -708,13 +708,18 @@
     var lwfRenderer = this.getRenderer();
 
     /** call the corresponding rendering function in LWF library */
-    if (lwfRenderer.match(/use.+Renderer/i)) {
+    if (lwfRenderer) {
       LWF[lwfRenderer]();
     } else {
       throw new Error('Renderer parameters are not properly set');
     }
 
     cache = LWF['ResourceCache']['get']();
+
+    /** enable debug options */
+    if (this.debug) {
+      global['LWFLOADER_ENABLE_DEBUG'] = true;
+    }
 
     /**
      * prepare parameters that will be passed into LWF,
