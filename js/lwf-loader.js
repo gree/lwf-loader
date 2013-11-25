@@ -24,6 +24,8 @@
 
   /** preventDefault() might cause unstable Android bugs */
   var isPreventDefaultEnabled = /(iPhone|iPad)/.test(userAgent) || /Android *(4|3)\..*/.test(userAgent);
+
+  /** For displaying debug FPS information */
   var debugInfoElementId = 0;
 
   /** @type {Object} */
@@ -103,7 +105,6 @@
     this.pausing = false;
     this.loadingCounter = 0;
     this.debug = false;
-    this.currentFPS = 0;
     this.backgroundColor = null;
     this.resizeMode = 'fitForWidth';
     this.resizeStretch = null;
@@ -117,10 +118,11 @@
 
     /** private members */
     var renderer = null;
+    var currentFPS = 0;
 
     /**
      * return the current renderer name in string, null if undefined
-     * @returns {string}
+     * @return {string} current renderer being used
      */
     this.getRenderer = function() {
       return renderer;
@@ -128,11 +130,11 @@
 
     /**
      * set the lwf renderer
-     * @param myRenderer
+     * @param {string} myRenderer renderer to set
      */
     this.setRenderer = function(myRenderer) {
       /** if renderer is already defined and initialized, we do not allow multiple definition */
-      if(renderer) {
+      if (renderer) {
         throw new Error('cannot use multiple renderer! LWF has been initialized for ' + renderer + ' renderer.');
       } else {
         if (myRenderer === 'canvas') {
@@ -149,6 +151,28 @@
       }
     };
 
+    /**
+     * return the current FPS
+     * @return {int} current FPS
+     */
+    this.getCurrentFPS = function() {
+      if (isNaN(currentFPS)) {
+        console.error('[LWF] FPS is not properly defined');
+      }
+      return currentFPS;
+    };
+
+    /**
+     * set the current FPS
+     * @param {int} current FPS
+     */
+    this.setCurrentFPS = function(fps) {
+      if (isNaN(fps)) {
+        console.error('[LWF] FPS is not properly defined');
+      }
+      currentFPS = fps;
+    };
+
     return this;
   }
 
@@ -159,17 +183,6 @@
    */
   LwfLoader.prototype.isLwfsEnvironment_ = function() {
     return global['testlwf_lwf'];
-  };
-
-  /**
-   * return the current FPS
-   * @return {int} current FPS
-   */
-  LwfLoader.prototype.getCurrentFPS = function() {
-    if (isNaN(this.currentFPS)){
-      console.error('[LWF] FPS is not properly defined');
-    }
-    return this.currentFPS;
   };
 
   /**
@@ -269,10 +282,12 @@
   /**
    * Reads external input the sets the displaySetting
    * accepts renderer, resizeMode, displayDivId, widthLimit, heightLimit settings
-   * @lwfDisplaySetting object array containing display related parameters
+   * @param {object} object array containing display related parameters
    */
-  LwfLoader.prototype.setDisplaySetting_ = function(lwfDisplaySetting) {
-    this.setRenderer(lwfDisplaySetting.renderer);
+  LwfLoader.prototype.setDisplaySetting = function(lwfDisplaySetting) {
+    if (lwfDisplaySetting.renderer) {
+      this.setRenderer(lwfDisplaySetting.renderer);
+    }
     this.resizeMode = lwfDisplaySetting.resizeMode || this.resizeMode;
     this.resizeStretch = lwfDisplaySetting.resizeStretch || this.resizeStretch;
     this.displayDivId = lwfDisplaySetting.displayDivId || this.displayDivId;
@@ -468,7 +483,7 @@
           divElement.innerHTML = fps_num60 + 'fps';
         }
         execCount++;
-        loader.currentFPS = fps_num60;
+        loader.setCurrentFPS(fps_num60);
       } catch (myException) {
         loader.handleException_(myException, myLoaderData);
       }
@@ -693,7 +708,7 @@
 
     if (lwfDisplaySetting) {
       lwfDisplaySetting = JSON.parse(lwfDisplaySetting);
-      this.setDisplaySetting_(lwfDisplaySetting);
+      this.setDisplaySetting(lwfDisplaySetting);
     }
 
     /* prepare LWF renderer */
@@ -1160,8 +1175,4 @@
 
   /** set lwf-loader parameters */
   global['LwfLoader'] = LwfLoader;
-  LwfLoader.prototype['playLWF'] = LwfLoader.prototype.playLWF;
-  LwfLoader.prototype['loadLWF'] = LwfLoader.prototype.loadLWF;
-  LwfLoader.prototype['addInitializeHook'] = LwfLoader.prototype.addInitializeHook;
-  LwfLoader.prototype['setRenderer'] = LwfLoader.prototype.setRenderer;
 })(window);
