@@ -182,7 +182,7 @@
    * @private
    */
   LwfLoader.prototype.isLwfsEnvironment_ = function() {
-    return global['testlwf_lwf'];
+    return global.testlwf_lwf;
   };
 
   /**
@@ -217,11 +217,11 @@
    * @private
    */
   LwfLoader.prototype.getLwfMapper_ = function(myLoaderData) {
-    if (myLoaderData['lwfMap'] === null) {
+    if (myLoaderData.lwfMap === null) {
       return _.bind(this.getLwfPath_, this);
     }
 
-    var lwfMap = myLoaderData['lwfMap'];
+    var lwfMap = myLoaderData.lwfMap;
     if (_.isObject(lwfMap)) {
       if (_.isFunction(lwfMap)) {
         return lwfMap;
@@ -302,7 +302,7 @@
    * @private
    */
   LwfLoader.prototype.handleException_ = function(myException, myLoaderData) {
-    var map = myLoaderData['pageTransitionMap'];
+    var map = myLoaderData.pageTransitionMap;
     var url = null;
     if (map.hasOwnProperty('error')) {
       url = map.error;
@@ -310,13 +310,13 @@
       url = _.find(map, function() {return true;});
     }
 
-    var handlers = myLoaderData['handler'];
-    if (handlers === null || handlers['exception'] === undefined) {
+    var handlers = myLoaderData.handler;
+    if (handlers === null || handlers.exception === undefined) {
       if (confirm('LWF exception. \n' + myException.stack + '\n reload?')) {
         location.reload();
       }
-    } else if (_.isFunction(handlers['exception'])) {
-      handlers['exception'](myException, url);
+    } else if (_.isFunction(handlers.exception)) {
+      handlers.exception(myException, url);
     }
     console.error('[LWF] exception: %s', myException.stack);
   };
@@ -328,26 +328,26 @@
    * @private
    */
   LwfLoader.prototype.handleLoadError_ = function(settings, myLoaderData) {
-    var map = myLoaderData['pageTransitionMap'];
+    var map = myLoaderData.pageTransitionMap;
     var url = null;
     if (!map.hasOwnProperty('error')) {
-      url = map['error'];
+      url = map.error;
     } else if (_.size(map) > 0) {
       url = _.find(map, function() {return true;});
     }
 
-    var handler = myLoaderData['handler'];
-    if (handler === null || handler['loadError'] === undefined) {
+    var handler = myLoaderData.handler;
+    if (handler === null || handler.loadError === undefined) {
       if (confirm('LWF load error. \n reload?')) {
         location.reload();
       }
-    } else if (_.isFunction(handler['loadError'])) {
-      handler['loadError'](settings, url);
+    } else if (_.isFunction(handler.loadError)) {
+      handler.loadError(settings, url);
     }
 
     /** output error information to frontend */
-    console.error('[LWF] load error: %o', settings['error']);
-    console.error('[LWF] loaded count: %d/%d', settings['loadedCount'], settings['total']);
+    console.error('[LWF] load error: %o', settings.error);
+    console.error('[LWF] loaded count: %d/%d', settings.loadedCount, settings.total);
   };
 
   /**
@@ -356,25 +356,25 @@
    */
   LwfLoader.prototype.onLoad = function(lwf) {
     var setting = this;
-    var privateData = setting['privateData'];
-    var myLoaderData = privateData['_loaderData'];
-    var loader = myLoaderData['loader'];
-    var stageEventReceiver = myLoaderData['stageEventReceiver'];
+    var privateData = setting.privateData;
+    var myLoaderData = privateData._loaderData;
+    var loader = myLoaderData.loader;
+    var stageEventReceiver = myLoaderData.stageEventReceiver;
 
     /** remove circular reference */
-    setting['privateData'] = null;
+    setting.privateData = null;
 
     if (!lwf) {
       loader.handleLoadError_(this, myLoaderData);
       return;
     }
 
-    if (_.isFunction(myLoaderData['callback']['onLoad'])) {
-      myLoaderData['callback']['onLoad'](lwf);
+    if (_.isFunction(myLoaderData.callback.onLoad)) {
+      myLoaderData.callback.onLoad(lwf);
     }
 
     var onExec, onMove, onPress, onRelease, onGestureEnd;
-    var stage = this['stage'];
+    var stage = this.stage;
     var widthInit = 0, heightInit = 0;
     var stageScale = 1;
     var stageWidth = 0;
@@ -386,7 +386,7 @@
     var t0_60 = t0;
     var fps_num60 = 0;
 
-    lwf['rootMovie'].moveTo(loader.rootOffset.x, loader.rootOffset.y);
+    lwf.rootMovie.moveTo(loader.rootOffset.x, loader.rootOffset.y);
 
     /**
      * loading handler, set the required information for LWF files
@@ -397,13 +397,13 @@
           return;
         }
 
-        var devicePixelRatio = global['devicePixelRatio'];
+        var devicePixelRatio = global.devicePixelRatio;
         if (loader.getRenderer() === 'useWebkitCSSRenderer') {
           devicePixelRatio = 1;
         }
 
-        var width = lwf['width'];
-        var height = lwf['height'];
+        var width = lwf.width;
+        var height = lwf.height;
         var innerWidth = global.innerWidth;
         var innerHeight = global.innerHeight;
 
@@ -417,34 +417,34 @@
           }
         }
 
-        if (width > innerWidth || myLoaderData['resizeStretch']) {
+        if (width > innerWidth || myLoaderData.resizeStretch) {
           width = innerWidth;
         }
-        if (height > innerHeight || myLoaderData['resizeStretch']) {
+        if (height > innerHeight || myLoaderData.resizeStretch) {
           height = innerHeight;
         }
 
         if (widthInit !== width || heightInit !== height) {
-          if (setting['fitForWidth']) {
+          if (setting.fitForWidth) {
             if (setting.widthLimit) {
               width = (width > setting.widthLimit) ? setting.widthLimit : width;
             }
             stageWidth = Math.round(width);
-            stageHeight = Math.round(width * lwf['height'] / lwf['width']);
+            stageHeight = Math.round(width * lwf.height / lwf.width);
           } else {
             if (setting.heightLimit) {
               height = (height > setting.heightLimit) ? setting.heightLimit : height;
             }
-            stageWidth = Math.round(height * lwf['width'] / lwf['height']);
+            stageWidth = Math.round(height * lwf.width / lwf.height);
             stageHeight = Math.round(height);
           }
 
           stageEventReceiver.style.width = stage.style.width = stageWidth + 'px';
           stageEventReceiver.style.height = stage.style.height = stageHeight + 'px';
 
-          stageEventReceiver.width = stage.width = ~~(stageWidth * devicePixelRatio);
-          stageEventReceiver.height = stage.height = ~~(stageHeight * devicePixelRatio);
-          if (setting['fitForWidth']) {
+          stageEventReceiver.width = stage.width = Math.floor(stageWidth * devicePixelRatio);
+          stageEventReceiver.height = stage.height = Math.floor(stageHeight * devicePixelRatio);
+          if (setting.fitForWidth) {
             stageScale = stageWidth / stage.width;
             lwf.property.clear();
             lwf.fitForWidth(stage.width, stage.height);
@@ -478,8 +478,8 @@
           t0_60 = t1;
           execCount = 0;
         }
-        if (loader.debug || myLoaderData['debug']) {
-          var divElement = document.getElementById('lwf_info' + myLoaderData['debugInfoElementId']);
+        if (loader.debug || myLoaderData.debug) {
+          var divElement = document.getElementById('lwf_info' + myLoaderData.debugInfoElementId);
           divElement.innerHTML = fps_num60 + 'fps';
         }
         execCount++;
@@ -623,7 +623,7 @@
         document.body.addEventListener('touchstart', function() {});
       }
 
-      if (isiOS && (loader.debug || myLoaderData['debug'])) {
+      if (isiOS && (loader.debug || myLoaderData.debug)) {
         stageEventReceiver.addEventListener('gestureend', onGestureEnd, false);
       }
       stageEventReceiver.addEventListener('touchmove', onMove, false);
@@ -636,7 +636,7 @@
     }
 
     /** button event */
-    _.each(myLoaderData['buttonEventMap'], function(handler, button_name) {
+    _.each(myLoaderData.buttonEventMap, function(handler, button_name) {
       if (_.isFunction(handler)) {
         handler = {
           'release' : handler
@@ -660,15 +660,15 @@
       fsCommands[k].push(f);
     };
 
-    if (_.isObject(myLoaderData['fsCommandMap'])) {
-      _.each(myLoaderData['fsCommandMap'], function(v, k) {
+    if (_.isObject(myLoaderData.fsCommandMap)) {
+      _.each(myLoaderData.fsCommandMap, function(v, k) {
         if (_.isFunction(v)) {
           registerFsCommands(k, v);
         }
       });
     }
-    if (_.isObject(myLoaderData['pageTransitionMap'])) {
-      _.each(myLoaderData['pageTransitionMap'], function(v, k) {
+    if (_.isObject(myLoaderData.pageTransitionMap)) {
+      _.each(myLoaderData.pageTransitionMap, function(v, k) {
         if (_.isString(v)) {
           registerFsCommands(k, function() {
             document.location.href = v;
@@ -713,11 +713,11 @@
 
     /* prepare LWF renderer */
     var LWF, cache;
-    LWF = global['LWF'];
+    LWF = global.LWF;
 
     /** if renderer is not manually defined, auto-select the optimal renderer*/
     if (!this.getRenderer()) {
-      this.setRenderer(global['Utility']['getRenderer']());
+      this.setRenderer(global.Utility.getRenderer());
     }
 
     var lwfRenderer = this.getRenderer();
@@ -729,67 +729,71 @@
       throw new Error('Renderer parameters are not properly set');
     }
 
-    cache = LWF['ResourceCache']['get']();
+    cache = LWF.ResourceCache.get();
 
     /** enable debug options */
     if (this.debug) {
-      global['LWFLOADER_ENABLE_DEBUG'] = true;
+      global.LWFLOADER_ENABLE_DEBUG = true;
     }
 
     /**
      * prepare parameters that will be passed into LWF,
      * by default it reads parameters previously stored in lwfDefaultParam
      */
-    var myLwfParam = _.isObject(global['lwfDefaultParam']) ? _.clone(global['lwfDefaultParam']) : {};
+    var myLwfParam = _.isObject(global.lwfDefaultParam) ? _.clone(global.lwfDefaultParam) : {};
 
     /** set load event handler */
-    myLwfParam['onload'] = this.onLoad;
+    myLwfParam.onload = this.onLoad;
 
     /** background color setting*/
     if (this.backgroundColor) {
-      myLwfParam['setBackgroundColor'] = this.backgroundColor;
+      myLwfParam.setBackgroundColor = this.backgroundColor;
     } else {
-      myLwfParam['useBackgroundColor'] = true;
+      myLwfParam.useBackgroundColor = true;
     }
 
-    myLwfParam['fitForHeight'] = false;
-    myLwfParam['fitForWidth'] = false;
+    myLwfParam.fitForHeight = false;
+    myLwfParam.fitForWidth = false;
 
     /** display related setting */
     if (this.resizeMode === 'fitForWidth') {
-      myLwfParam['fitForWidth'] = true;
-    } else if (this.resizeMode == 'fitForHeight') {
-      myLwfParam['fitForHeight'] = true;
+      myLwfParam.fitForWidth = true;
+    } else if (this.resizeMode === 'fitForHeight') {
+      myLwfParam.fitForHeight = true;
     }
 
-    myLwfParam['resizeStretch'] = this.resizeStretch;
-    myLwfParam['widthLimit'] = this.widthLimit;
-    myLwfParam['heightLimit'] = this.heightLimit;
+    myLwfParam.resizeStretch = this.resizeStretch;
+    myLwfParam.widthLimit = this.widthLimit;
+    myLwfParam.heightLimit = this.heightLimit;
 
     /** web worker setting, only available on Chrome or non-Android devices*/
-    myLwfParam['worker'] = useWebWorker;
+    myLwfParam.worker = useWebWorker;
 
     /** handle buggy css behaviour in certain devices */
     if (isAndroid && / SC-0/.test(userAgent) && lwfRenderer === 'useWebkitCSSRenderer') {
-      myLwfParam['quirkyClearRect'] = true;
+      myLwfParam.quirkyClearRect = true;
     }
 
     /** force to disable use3D on Android devices */
     if (isAndroid) {
-      myLwfParam['use3D'] = false;
+      myLwfParam.use3D = false;
     }
 
     /** prepare LWF or lwf-loader required data */
-    myLwfParam['privateData'] = {};
-    myLwfParam['pos'] = null;
-    myLwfParam['imageMap'] = {};
-    myLwfParam['soundMap'] = {};
-    myLwfParam['pageTransitionMap'] = {};
-    myLwfParam['buttonEventMap'] = {};
-    myLwfParam['fsCommandMap'] = {};
-    myLwfParam['handler'] = {};
-    myLwfParam['callback'] = {};
-    myLwfParam['lwfMap'] = null;
+    myLwfParam.privateData = {};
+    myLwfParam.pos = null;
+    myLwfParam.imageMap = {};
+    myLwfParam.soundMap = {};
+    myLwfParam.pageTransitionMap = {};
+    myLwfParam.buttonEventMap = {};
+    myLwfParam.fsCommandMap = {};
+    myLwfParam.handler = {};
+    myLwfParam.callback = {};
+    myLwfParam.lwfMap = null;
+
+//    function convertToUpperCase(inputStr) {
+//      return inputStr.charAt(1).toUpperCase();
+//    }
 
     for (var i = 0; i < targetElem.attributes.length; i++) {
       var elemAttr = targetElem.attributes[i];
@@ -820,21 +824,21 @@
     }
 
     /** for displaying high-resolution images on certain devices */
-    if (global['devicePixelRatio'] == 2 && myLwfParam['useHighResImage']) {
-      myLwfParam['imageSuffix'] = '_@2x';
+    if (global.devicePixelRatio === 2 && myLwfParam.useHighResImage) {
+      myLwfParam.imageSuffix = '_@2x';
     }
 
     /** 'data-lwf' is alias of 'data-lwf-lwf' */
     if (!myLwfParam.hasOwnProperty('lwf')) {
       var lwfFileName = targetElem.getAttribute('data-lwf');
       if (_.isString(lwfFileName)) {
-        myLwfParam['lwf'] = lwfFileName;
+        myLwfParam.lwf = lwfFileName;
       }
     }
 
     /** copy 'name' property to 'lwf' to keep backward compatibility */
     if (myLwfParam.hasOwnProperty('name')) {
-      myLwfParam['lwf'] = myLwfParam['name'];
+      myLwfParam.lwf = myLwfParam.name;
     }
 
     if (_.isObject(lwfParam)) {
@@ -865,78 +869,78 @@
 
     /** Initialize loader-data parameters*/
     var myLoaderData = {};
-    myLoaderData['debugInfoElementId'] = ++debugInfoElementId;
-    myLoaderData['setting'] = myLwfParam;
-    myLoaderData['loader'] = this;
-    myLoaderData['debug'] = false;
-    myLoaderData['soundMap'] = null;
-    myLoaderData['pageTransitionMap'] = null;
-    myLoaderData['buttonEventMap'] = null;
-    myLoaderData['fsCommandMap'] = null;
-    myLoaderData['handler'] = null;
-    myLoaderData['callback'] = null;
-    myLoaderData['stageEventReceiver'] = null;
-    myLoaderData['lwfMap'] = null;
-    myLoaderData['debug'] = this.debug;
+    myLoaderData.debugInfoElementId = ++debugInfoElementId;
+    myLoaderData.setting = myLwfParam;
+    myLoaderData.loader = this;
+    myLoaderData.debug = false;
+    myLoaderData.soundMap = null;
+    myLoaderData.pageTransitionMap = null;
+    myLoaderData.buttonEventMap = null;
+    myLoaderData.fsCommandMap = null;
+    myLoaderData.handler = null;
+    myLoaderData.callback = null;
+    myLoaderData.stageEventReceiver = null;
+    myLoaderData.lwfMap = null;
+    myLoaderData.debug = this.debug;
 
-    if (!myLwfParam['privateData'].hasOwnProperty('lwfLoader')) {
+    if (!myLwfParam.privateData.hasOwnProperty('lwfLoader')) {
       /** for backward compatibility */
-      myLwfParam['privateData']['lwfLoader'] = this; /* pass loader object to LWF */
+      myLwfParam.privateData.lwfLoader = this; /* pass loader object to LWF */
     }
 
-    myLwfParam['imageMap'] = this.getImageMapper_(myLwfParam['imageMap']);
+    myLwfParam.imageMap = this.getImageMapper_(myLwfParam.imageMap);
 
-    if (!_.isEmpty(myLwfParam['soundMap'])) {
-      myLoaderData['soundMap'] = myLwfParam['soundMap'];
+    if (!_.isEmpty(myLwfParam.soundMap)) {
+      myLoaderData.soundMap = myLwfParam.soundMap;
     }
-    delete myLwfParam['soundMap'];
+    delete myLwfParam.soundMap;
 
-    if (_.isObject(myLwfParam['pageTransitionMap'])) {
-      myLoaderData['pageTransitionMap'] = myLwfParam['pageTransitionMap'];
+    if (_.isObject(myLwfParam.pageTransitionMap)) {
+      myLoaderData.pageTransitionMap = myLwfParam.pageTransitionMap;
     }
-    delete myLwfParam['pageTransitionMap'];
+    delete myLwfParam.pageTransitionMap;
 
-    myLoaderData['buttonEventMap'] = myLwfParam['buttonEventMap'];
-    delete myLwfParam['buttonEventMap'];
+    myLoaderData.buttonEventMap = myLwfParam.buttonEventMap;
+    delete myLwfParam.buttonEventMap;
 
-    if (!_.isEmpty(myLwfParam['fsCommandMap'])) {
-      myLoaderData['fsCommandMap'] = myLwfParam['fsCommandMap'];
+    if (!_.isEmpty(myLwfParam.fsCommandMap)) {
+      myLoaderData.fsCommandMap = myLwfParam.fsCommandMap;
     }
-    delete myLwfParam['fsCommandMap'];
+    delete myLwfParam.fsCommandMap;
 
-    if (!_.isEmpty(myLwfParam['handler'])) {
-      myLoaderData['handler'] = myLwfParam['handler'];
+    if (!_.isEmpty(myLwfParam.handler)) {
+      myLoaderData.handler = myLwfParam.handler;
     }
-    delete myLwfParam['handler'];
+    delete myLwfParam.handler;
 
-    myLoaderData['callback'] = myLwfParam['callback'];
-    delete myLwfParam['callback'];
+    myLoaderData.callback = myLwfParam.callback;
+    delete myLwfParam.callback;
 
-    myLoaderData['lwfMap'] = myLwfParam['lwfMap'];
-    delete myLwfParam['lwfMap'];
+    myLoaderData.lwfMap = myLwfParam.lwfMap;
+    delete myLwfParam.lwfMap;
 
-    myLoaderData['resizeStretch'] = myLwfParam['resizeStretch'];
-    delete myLwfParam['resizeStretch'];
+    myLoaderData.resizeStretch = myLwfParam.resizeStretch;
+    delete myLwfParam.resizeStretch;
 
     if (this.isLwfsEnvironment_()) {
       var lwfPath;
-      if (myLwfParam['prefix']) {
-        lwfPath = myLwfParam['prefix'] + myLwfParam['lwf'];
+      if (myLwfParam.prefix) {
+        lwfPath = myLwfParam.prefix + myLwfParam.lwf;
       } else {
-        lwfPath = myLwfParam['lwf'];
+        lwfPath = myLwfParam.lwf;
       }
-      myLwfParam['prefix'] = lwfPath.slice(0, lwfPath.lastIndexOf('/') + 1);
-      delete myLwfParam['imagePrefix'];
-      myLwfParam['lwf'] = lwfPath.slice(lwfPath.lastIndexOf('/') + 1);
+      myLwfParam.prefix = lwfPath.slice(0, lwfPath.lastIndexOf('/') + 1);
+      delete myLwfParam.imagePrefix;
+      myLwfParam.lwf = lwfPath.slice(lwfPath.lastIndexOf('/') + 1);
     }
 
     var pos = {};
-    pos['position'] = 'absolute';
-    pos['top'] = 0;
-    pos['left'] = 0;
+    pos.position = 'absolute';
+    pos.top = 0;
+    pos.left = 0;
 
-    _.extend(pos, myLwfParam['pos']);
-    delete myLwfParam['pos'];
+    _.extend(pos, myLwfParam.pos);
+    delete myLwfParam.pos;
 
     /** prepare LWF stage */
     if (targetElem.style.position === 'static' ||
@@ -945,9 +949,9 @@
       targetElem.style.position = 'relative';
     }
     var stage = createStage(lwfRenderer);
-    stage.style.position = pos['position'];
-    stage.style.top = pos['top'] + 'px';
-    stage.style.left = pos['left'] + 'px';
+    stage.style.position = pos.position;
+    stage.style.top = pos.top + 'px';
+    stage.style.left = pos.left + 'px';
     stage.style.zIndex = targetElem.style.zIndex + 1;
     targetElem.appendChild(stage);
 
@@ -956,39 +960,39 @@
     if (isSp) {
       stageEventReceiver = document.createElement('div');
       stageEventReceiver.style.position = 'absolute';
-      stageEventReceiver.style.top = pos['top'] + 'px';
-      stageEventReceiver.style.left = pos['left'] + 'px';
+      stageEventReceiver.style.top = pos.top + 'px';
+      stageEventReceiver.style.left = pos.left + 'px';
       stageEventReceiver.style.zIndex = stage.style.zIndex + 1;
       targetElem.appendChild(stageEventReceiver);
     } else {
       stageEventReceiver = stage;
     }
-    myLwfParam['stage'] = stage;
-    myLoaderData['stageEventReceiver'] = stageEventReceiver;
+    myLwfParam.stage = stage;
+    myLoaderData.stageEventReceiver = stageEventReceiver;
 
     /** for displaying debug information during runtime */
-    if (this.debug || myLoaderData['debug']) {
+    if (this.debug || myLoaderData.debug) {
       var divElement = document.createElement('div');
       divElement.id = 'lwf_info' + debugInfoElementId;
-      divElement.style.position = pos['position'];
-      divElement.style.top = pos['top'] + 'px';
-      divElement.style.left = pos['left'] + 'px';
+      divElement.style.position = pos.position;
+      divElement.style.top = pos.top + 'px';
+      divElement.style.left = pos.left + 'px';
       divElement.style.color = 'white';
       divElement.style.zIndex = 10000;
       targetElem.appendChild(divElement);
     }
 
-    if (!myLwfParam['lwf']) {
+    if (!myLwfParam.lwf) {
       console.error('[LWF] no LWF input');
       return;
     }
-    myLoaderData['useLwfJs'] = /\.lwf.js(\?.*)?$/.test(myLwfParam['lwf']);
+    myLoaderData.useLwfJs = /\.lwf.js(\?.*)?$/.test(myLwfParam.lwf);
 
     if (myLwfParam.hasOwnProperty('_loaderData')) {
       throw new Error('cannot use \'_loaderData\' property that used by lwf-loader!');
     }
 
-    myLwfParam['privateData']['_loaderData'] = myLoaderData;
+    myLwfParam.privateData._loaderData = myLoaderData;
 
     cache.loadLWF(myLwfParam);
   };
@@ -1006,20 +1010,20 @@
   LwfLoader.prototype.requestLWF_ = function(lwf, lwfId, imageMap, privateData, myCallback) {
     var lwfInput = {};
 
-    /** for LWFS environment, inherit parents' settings from window['testlwf_settings']*/
+    /** for LWFS environment, inherit parents' settings from window.testlwf_settings*/
     if (this.isLwfsEnvironment_()) {
-      var lwfParam = _.clone(window['testlwf_settings']);
+      var lwfParam = _.clone(window.testlwf_settings);
 
       var prefix;
-      if (lwfParam['prefix']) {
-        prefix = lwfParam['prefix'] + lwfId + '/_/';
+      if (lwfParam.prefix) {
+        prefix = lwfParam.prefix + lwfId + '/_/';
       } else {
         prefix = document.location.pathname;
-        prefix = prefix.replace(lwf['name'], lwfId);
+        prefix = prefix.replace(lwf.name, lwfId);
         prefix = prefix.slice(0, prefix.lastIndexOf('/') + 1) + '_/';
       }
-      lwfParam['prefix'] = prefix;
-      delete lwfParam['imagePrefix'];
+      lwfParam.prefix = prefix;
+      delete lwfParam.imagePrefix;
 
       lwfInput = this.getLwfPath_(lwfId);
       if (!lwfInput) {
@@ -1027,53 +1031,53 @@
         myCallback('no LWF input', null);
         return null;
       }
-      lwfParam['lwf'] = lwfInput;
+      lwfParam.lwf = lwfInput;
       if (isAndroid) {
-        lwfParam['lwf'] += '.js';
+        lwfParam.lwf += '.js';
       }
-      lwfParam['parentLWF'] = lwf;
-      lwfParam['stage'] = lwf['stage'];
-      lwfParam['worker'] = useWebWorker;
-      lwfParam['active'] = false;
+      lwfParam.parentLWF = lwf;
+      lwfParam.stage = lwf.stage;
+      lwfParam.worker = useWebWorker;
+      lwfParam.active = false;
 
       if (imageMap) {
-        lwfParam['imageMap'] = this.getImageMapper_(imageMap);
+        lwfParam.imageMap = this.getImageMapper_(imageMap);
       }
       if (privateData) {
-        lwfParam['privateData'] = privateData;
+        lwfParam.privateData = privateData;
       }
 
       lwfParam.onload = function(childLwf) {
-        var loader = this['privateData']['lwfLoader'];
+        var loader = this.privateData.lwfLoader;
         if (!childLwf) {
           loader.handleLoadError_(this);
-          return myCallback(this['error'], childLwf);
+          return myCallback(this.error, childLwf);
         }
         return myCallback(null, childLwf);
       };
 
     } else {
       /** use data and loader parameters stored in parent LWF instance*/
-      var parentPrivateData = lwf['privateData'];
+      var parentPrivateData = lwf.privateData;
       if ('undefined' === typeof parentPrivateData) {
         console.error('[LWF] Parent private data is not found');
         myCallback('no parents data found', null);
         return null;
       }
 
-      var myLoaderData = _.clone(parentPrivateData['_loaderData']);
+      var myLoaderData = _.clone(parentPrivateData._loaderData);
       if ('undefined' === typeof myLoaderData) {
         console.error('[LWF] Parent Loader data is not found');
         myCallback('no loader parameters to inherit');
         return null;
       }
 
-      var parentLwfParam = myLoaderData['setting'];
+      var parentLwfParam = myLoaderData.setting;
       lwfParam = _.clone(parentLwfParam); /* inherit from parent LWF */
 
       /* child LWFs are rendered using their own size. */
-      lwfParam['fitForHeight'] = lwfParam['fitForWidth'] = false;
-      myLoaderData['setting'] = lwfParam;
+      lwfParam.fitForHeight = lwfParam.fitForWidth = false;
+      myLoaderData.setting = lwfParam;
 
       lwfInput = null;
       try {
@@ -1087,37 +1091,37 @@
         myCallback('no LWF input', null);
         return null;
       }
-      lwfParam['lwf'] = lwfInput;
-      if (myLoaderData['useLwfJs']) {
-        lwfParam['lwf'] += '.js';
+      lwfParam.lwf = lwfInput;
+      if (myLoaderData.useLwfJs) {
+        lwfParam.lwf += '.js';
       }
 
-      lwfParam['parentLWF'] = lwf;
-      lwfParam['stage'] = lwf['stage'];
-      lwfParam['worker'] = useWebWorker;
-      lwfParam['active'] = false;
+      lwfParam.parentLWF = lwf;
+      lwfParam.stage = lwf.stage;
+      lwfParam.worker = useWebWorker;
+      lwfParam.active = false;
 
       if (imageMap) {
-        lwfParam['imageMap'] = this.getImageMapper_(imageMap);
+        lwfParam.imageMap = this.getImageMapper_(imageMap);
       }
       if (privateData) {
-        privateData['_loaderData'] = myLoaderData;
-        lwfParam['privateData'] = privateData;
+        privateData._loaderData = myLoaderData;
+        lwfParam.privateData = privateData;
 
-        if (privateData['prefix']) {
-          lwfParam['prefix'] = privateData['prefix'];
+        if (privateData.prefix) {
+          lwfParam.prefix = privateData.prefix;
         }
 
-        if (privateData['imagePrefix']) {
-          lwfParam['imagePrefix'] = privateData['imagePrefix'];
+        if (privateData.imagePrefix) {
+          lwfParam.imagePrefix = privateData.imagePrefix;
         }
       }
 
-      lwfParam['onload'] = function(childLwf) {
-        var loader = myLoaderData['loader'];
+      lwfParam.onload = function(childLwf) {
+        var loader = myLoaderData.loader;
         if (!childLwf) {
           loader.handleLoadError_(this, myLoaderData);
-          return myCallback(this['error'], childLwf);
+          return myCallback(this.error, childLwf);
         }
         return myCallback(null, childLwf);
       };
@@ -1148,7 +1152,7 @@
    * @param {function} myCallback callback to return all LWF instances
    */
   LwfLoader.prototype.loadLWFs = function(myCallback) {
-    var LWF = global['LWF'];
+    var LWF = global.LWF;
     var cache = LWF.ResourceCache.get();
     cache.loadLWFs(this.requests, myCallback);
     this.requests = [];
@@ -1168,11 +1172,11 @@
       return;
     }
 
-    var LWF = global['LWF'];
+    var LWF = global.LWF;
     var cache = LWF.ResourceCache.get();
     cache.loadLWF(lwfParam);
   };
 
   /** set lwf-loader parameters */
-  global['LwfLoader'] = LwfLoader;
+  global.LwfLoader = LwfLoader;
 })(window);
