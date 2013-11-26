@@ -111,6 +111,8 @@
     this.displayDivId = null;
     this.widthLimit = 0;
     this.heightLimit = 0;
+    this.useLargeImage = false;
+
     this.rootOffset = {
       x: 0,
       y: 0
@@ -298,6 +300,7 @@
     this.displayDivId = lwfDisplaySetting.displayDivId || this.displayDivId;
     this.widthLimit = lwfDisplaySetting.widthLimit || this.widthLimit;
     this.heightLimit = lwfDisplaySetting.heightLimit || this.heightLimit;
+    this.useLargeImage = lwfDisplaySetting.useLargeImage || this.useLargeImage;
   };
 
   /**
@@ -796,19 +799,18 @@
     myLwfParam.callback = {};
     myLwfParam.lwfMap = null;
 
-//    function convertToUpperCase(inputStr) {
-//      return inputStr.charAt(1).toUpperCase();
-//    }
+    /** helper function converts first character of input to uppercase*/
+    var convertToUpperCase = function(matched) {
+      return matched.charAt(1).toUpperCase();
+    };
 
     for (var i = 0; i < targetElem.attributes.length; i++) {
       var elemAttr = targetElem.attributes[i];
       if (elemAttr.name && elemAttr.name.indexOf('data-lwf-') === 0) {
         var lwfParamName = elemAttr.name.slice('data-lwf-'.length);
-        lwfParamName = lwfParamName.replace(/_./g, function(matched) {
-          return matched.charAt(1).toUpperCase();
-        });
+        lwfParamName = lwfParamName.replace(/_./g, convertToUpperCase);
 
-        /** 'data-lwf-display_setting' is used by global setting */
+        /** 'data-lwf-display_setting' is reserved */
         if (lwfParamName === 'displaySetting') {
           continue;
         }
@@ -828,8 +830,12 @@
       }
     }
 
-    /** for displaying high-resolution images on certain devices */
-    if (global.devicePixelRatio === 2 && myLwfParam.useHighResImage) {
+    /**
+     * turn this.useLargeImage to true
+     * for displaying high-resolution images on certain devices
+     * this should only be applied to devices with devicePixelRatio = 2
+     * */
+    if (global.devicePixelRatio === 2 && this.useLargeImage) {
       myLwfParam.imageSuffix = '_@2x';
     }
 
@@ -1012,7 +1018,7 @@
    * @param {object} privateData LWF private data
    * @param {function} myCallback callback to return attach LWF instance
    */
-  LwfLoader.prototype.requestLWF_ = function(lwf, lwfId, imageMap, privateData, myCallback) {
+  LwfLoader.prototype.requestLWF = function(lwf, lwfId, imageMap, privateData, myCallback) {
     var lwfInput = {};
 
     /** for LWFS environment, inherit parents' settings from window.testlwf_settings*/
@@ -1135,24 +1141,6 @@
   };
 
   /**
-   * request LWF to attach
-   * called inside custom loadLWF function
-   * @param {object} lwf parent LWF instance
-   * @param {number} lwfId LWF ID
-   * @param {object} imageMap LWF image map
-   * @param {object} privateData LWF private data
-   * @param {function} myCallback callback to return attach LWF instance
-   */
-  LwfLoader.prototype.requestLWF = function(lwf, lwfId, imageMap, privateData, myCallback) {
-    var lwfParam = this.requestLWF_(lwf, lwfId, imageMap, privateData, myCallback);
-    if (_.isNull(lwfParam)) {
-      return;
-    }
-
-    this.requests.push(lwfParam);
-  };
-
-  /**
    * Call LWF's loadLWFs function via loader.
    * @param {function} myCallback callback to return all LWF instances
    */
@@ -1172,7 +1160,7 @@
    * @param {function} myCallback callback to return attach LWF instance
    */
   LwfLoader.prototype.loadLWF = function(lwf, lwfId, imageMap, privateData, myCallback) {
-    var lwfParam = this.requestLWF_(lwf, lwfId, imageMap, privateData, myCallback);
+    var lwfParam = this.requestLWF(lwf, lwfId, imageMap, privateData, myCallback);
     if (_.isNull(lwfParam)) {
       return;
     }
