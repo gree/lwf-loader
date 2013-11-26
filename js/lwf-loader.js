@@ -129,7 +129,7 @@
     };
 
     /**
-     * set the lwf renderer
+     * Set loader's rendering mode to given renderer.
      * @param {string} myRenderer renderer to set
      */
     this.setRenderer = function(myRenderer) {
@@ -177,17 +177,17 @@
   }
 
   /**
-   * check the LWFS environment
-   * @return {Boolean} if the environment is lwfs, return true
+   * check if currently running under LWFS environment
+   * @return {Boolean} if currently running under lwfs, return true
    * @private
    */
   LwfLoader.prototype.isLwfsEnvironment_ = function() {
-    return global.testlwf_lwf;
+    return global.testlwf_settings;
   };
 
   /**
-   * add initialize hook
-   * @param {function} hook
+   * Add hook functions that will be bound to corresponding functions before LWF is played.
+   * @param {function} hook functions
    */
   LwfLoader.prototype.addInitializeHook = function(hook) {
     if (!_.isFunction(hook)) {
@@ -197,21 +197,25 @@
   };
 
   /**
-   * stop LWF
+   * stop playing LWF
    */
   LwfLoader.prototype.pause = function() {
     this.pausing = true;
   };
 
   /**
-   * play LWF
+   * Resume playing LWF from pause state.
    */
   LwfLoader.prototype.resume = function() {
     this.pausing = false;
   };
 
   /**
-   * Function that generates the path of LWF resources
+   * Generates function that takes LWF resource name as an input and
+   * returns the path corresponding to it based on previously defined lwfMap array.
+   * If lwfMap is not defined, this function will call getLwfPath_ function directly.
+   * If input is a function, return directly. Otherwise, it tries to set path from the previous set lwfMap array.
+   * This function is used to generate path retriever gets the correct LWF path name in a flexible way.
    * @param {object} myLoaderData loader instance data
    * @return {function} function generates lwf path
    * @private
@@ -264,7 +268,9 @@
   };
 
   /**
-   * returns function that gets the path corresponding to the input image
+   * Generates function that takes image name as an input and returns the path corresponding to it.
+   * If input is a function, return directly. Otherwise, it tries to set path from the previous set imageMap array.
+   * ImageMap will be passed into LWF directly.
    * @param {object} imageMap image map data
    * @return {Function} function to replace path by maps
    * @private
@@ -280,8 +286,7 @@
   };
 
   /**
-   * Reads external input the sets the displaySetting
-   * accepts renderer, resizeMode, displayDivId, widthLimit, heightLimit settings
+   * Sets the LwfLoader display setting from input parameters.
    * @param {object} object array containing display related parameters
    */
   LwfLoader.prototype.setDisplaySetting = function(lwfDisplaySetting) {
@@ -696,7 +701,7 @@
   };
 
   /**
-   * load and play LWF to specified DOM element
+   * load and play LWF using given parameters
    * @param {object} targetElem target DOM element
    * @param {object} lwfParam sets LWF parameters using optional params
    * @return {*}
@@ -1148,7 +1153,7 @@
   };
 
   /**
-   * load LWFs to attach
+   * Call LWF's loadLWFs function via loader.
    * @param {function} myCallback callback to return all LWF instances
    */
   LwfLoader.prototype.loadLWFs = function(myCallback) {
@@ -1159,7 +1164,7 @@
   };
 
   /**
-   * load LWF to attach
+   * Load external LWF resource to attach on current running LWF.
    * @param {object} lwf parent LWF instance
    * @param {number} lwfId LWF ID
    * @param {object} imageMap LWF image map
