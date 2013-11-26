@@ -1018,7 +1018,7 @@
    * @param {object} privateData LWF private data
    * @param {function} myCallback callback to return attach LWF instance
    */
-  LwfLoader.prototype.requestLWF = function(lwf, lwfId, imageMap, privateData, myCallback) {
+  LwfLoader.prototype.requestLWF_ = function(lwf, lwfId, imageMap, privateData, myCallback) {
     var lwfInput = {};
 
     /** for LWFS environment, inherit parents' settings from window.testlwf_settings*/
@@ -1160,7 +1160,7 @@
    * @param {function} myCallback callback to return attach LWF instance
    */
   LwfLoader.prototype.loadLWF = function(lwf, lwfId, imageMap, privateData, myCallback) {
-    var lwfParam = this.requestLWF(lwf, lwfId, imageMap, privateData, myCallback);
+    var lwfParam = this.requestLWF_(lwf, lwfId, imageMap, privateData, myCallback);
     if (_.isNull(lwfParam)) {
       return;
     }
