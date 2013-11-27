@@ -21,15 +21,12 @@
 
   <div id="menu">
     <div class="pure-menu pure-menu-open">
-      <a class="pure-menu-heading" href="http://gree.github.io/lwf-loader/">LWF Loader</a>
-      <a href="https://github.com/gree/lwf-loader" style="margin-left: 0; margin-bottom: 10px;">Github Link</a>
+      <a class="pure-menu-heading" href="#main">LWF Loader</a>
+      <a class="highlight-text" href="http://gree.github.io/lwf-loader/" style="font-size: 90%; margin-left: 0; margin-top: -5px;">Overview</a>
+      <a class="highlight-text" href="https://github.com/gree/lwf-loader/" style="font-size: 90%; margin-left: 0; margin-bottom: 10px; margin-top: -10px;">Github Link</a>
       <ul>
-        <li class="pure-menu-selected menu-item-strong">
-
-        </li>
-
         <li class="pure-menu-selected menu-item-divided">
-          <a href="#_global_">Objects</a>
+          <a href="#_global_">_global_</a>
         </li>
 
         <li class="pure-menu menu-item-text">
@@ -61,31 +58,22 @@
           <a href="#LwfLoader">LwfLoader</a>
         </li>
         <li class="pure-menu menu-item-text">
+          <a href="#constructor">Constructor</a>
+        </li>
+        <li class="pure-menu menu-item-text">
           <a href="#addInitializeHook">addInitializeHook</a>
         </li>
         <li class="pure-menu menu-item-text">
           <a href="#getCurrentFPS">getCurrentFPS</a>
         </li>
         <li class="pure-menu menu-item-text">
-          <a href="#getImageMapper">getImageMapper_</a>
-        </li>
-        <li class="pure-menu menu-item-text">
-          <a href="#getLwfMapper">getLwfMapper_</a>
-        </li>
-        <li class="pure-menu menu-item-text">
-          <a href="#getLwfPath">getLwfPath_</a>
-        </li>
-        <li class="pure-menu menu-item-text">
           <a href="#getRenderer">getRenderer</a>
-        </li>
-        <li class="pure-menu menu-item-text">
-          <a href="#isLwfsEnvironment">isLwfsEnvironment_</a>
         </li>
         <li class="pure-menu menu-item-text">
           <a href="#loadLWF">loadLWF</a>
         </li>
         <li class="pure-menu menu-item-text">
-          <a href="#loadLWFs">loafLWFs</a>
+          <a href="#loadLWFs">loadLWFs</a>
         </li>
         <li class="pure-menu menu-item-text">
           <a href="#pause">pause</a>
@@ -96,7 +84,6 @@
         <li class="pure-menu menu-item-text">
           <a href="#requestLWF">requestLWF</a>
         </li>
-
         <li class="pure-menu menu-item-text">
           <a href="#resume">resume</a>
         </li>
@@ -113,7 +100,7 @@
 
   <div id="main">
     <div class="header">
-      <h1>LWF Loader</h1>
+      <h1 id="title">LWF Loader</h1>
       <h2>Loads LWF in a simple and elegant way.</h2>
     </div>
 
@@ -190,20 +177,54 @@
         => Turn off Web Worker on Android native browser, allow it runs on Android Chrome.
       </blockquote>
       <br>
+
       <hr>
+
       <h2 id="LwfLoader" class="content-subhead">Lwf Loader<a href="#LwfLoader" class="content-link"></a></h2>
+
+      <h3 id="constructor" style="margin-top: 5%;">LwfLoader Constructor
+        <code class="simple" style="margin-left: 5%;">new LwfLoader()</code></h3>
+      <p>
+        Create a new instance of a lwf-loader. The loader will be initialized with default values.<br>
+      </p>
+
+      <blockquote class="content-code">
+        new LwfLoader();<br>
+        //all members will be initialized with default values
+      </blockquote>
+      <p>LwfLoader class members</p>
+      <pre>
+        <code>
+<b>initializeHooks : []</b>,                    array containing hook functions to be bound.<br>
+<b>requests : []</b>,                           array containing load-ready LWF parameters<br>
+<b>pausing: false</b>,                          flag tells whether the animation is going on<br>
+<b>loadingCount : 0</b>,                        counter stores the loading progress<br>
+<b>debug : false</b>,                           turn this flag on to display debug information in the log<br>
+<b>backgroundColor : null</b>,                  color used to fill stage (ARGB integer)<br>
+<b>resizeMode : 'fitForWidth'</b>,              behaviour of LWF on window resize, 'fitForWidth' or 'fitForHeight'<br>
+<b>resizeStretch : false</b>,                   flag tells whether stretch LWF to match window size<br>
+<b>displayDivId : null</b>,                     ID of DOM element which contains LWF resource<br>
+<b>widthLimit : 0</b>,                          width limit applied to LWF element<br>
+<b>heightLimit : 0</b>,                         height limit applied to LWF element<br>
+<b>useLargeImage : false</b>,                   boolean tells whether use images with suffix '_@2x'<br>
+<b>rootOffset : { x:0, y:0 }</b>,               root offset coordinate
+        </code>
+      </pre>
+      <br>
+
       <h3 id="addInitializeHook" style="margin-top: 5%;">addInitializeHook
         <code class="simple" style="margin-left: 5%;">addInitializeHook(hookFunc)</code></h3>
       <p>
         Add hook functions that will be bound to corresponding functions before LWF is played.
+        Mainly used for defining custom debugging functions.
       </p>
 
       <blockquote class="content-code">
         var paramHandler = function() { <br>
         &nbsp;&nbsp;return { <br>
         &nbsp;&nbsp;&nbsp;&nbsp;handler: { <br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loadError: function(e) { console,log(e); }, <br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exception: function(e) { console,log(e); } <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loadError: function(e) { console.log(e); }, <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exception: function(e) { console.log(e); } <br>
         &nbsp;&nbsp;&nbsp;&nbsp;} <br>
         &nbsp;&nbsp;};<br>
         };<br>
@@ -211,7 +232,7 @@
         var paramCallback = function() { <br>
         &nbsp;&nbsp;return { <br>
         &nbsp;&nbsp;&nbsp;&nbsp;callback: { <br>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onLoad: function(lwf) { console,log(lwf); } <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onLoad: function(lwf) { console.log(lwf); } <br>
         &nbsp;&nbsp;&nbsp;&nbsp;} <br>
         &nbsp;&nbsp;};<br>
         };<br>
@@ -220,7 +241,8 @@
         lwfLoader.addInitializeHook(paramCallback);<br>
         <br>
         //Self-defined hook functions will be bound<br>
-        //Supports handler for exception and loadError, callback on onLoad function
+        //<b>Supports handler for <code>exception</code> and <code>loadError</code>,
+        callback on <code>onLoad</code> function</b>
       </blockquote>
       <br>
 
@@ -235,49 +257,6 @@
       </blockquote>
       <br>
 
-      <h3 id="getImageMapper" style="margin-top: 5%;">getImageMapper_
-        <code class="simple" style="margin-left: 5%;">getImageMapper_(imageMap)</code></h3>
-      <p>
-        Generates function that takes image name as an input and returns the path corresponding to it.
-        If input is a function, return directly. Otherwise, it tries to set path from the previous set imageMap array.
-        This parameter will be passed into LWF directly.
-      </p>
-
-      <blockquote class="content-code">
-        var imageMapper = lwfLoader.getImageMapper(imageMap);<br>
-        => function imageMapper(image) returns corresponding path for its input image <br>
-      </blockquote>
-      <br>
-
-      <h3 id="getLwfMapper" style="margin-top: 5%;">getLwfMapper_
-        <code class="simple" style="margin-left: 5%;">getLwfMapper_(lwfMap)</code></h3>
-      <p>
-        Generates function that takes LWF resource name as an input and returns the path corresponding to it based on previously defined lwfMap array.
-        If lwfMap is not defined, this function will call <b>getLwfPath_</b> function directly.
-        If input is a function, return directly. Otherwise, it tries to set path from the previous set lwfMap array.
-        This function is used to generate path retriever gets the correct LWF path name in a flexible way.
-      </p>
-
-      <blockquote class="content-code">
-        var imageMapper = lwfLoader.getImageMapper(imageMap);<br>
-        => function imageMapper(image) returns corresponding path for its input image <br>
-      </blockquote>
-      <br>
-
-      <h3 id="getLwfPath" style="margin-top: 5%;">getLwfPath_
-        <code class="simple" style="margin-left: 5%;">getLwfPath_(lwfId)</code></h3>
-      <p>
-        Get LWF Path from input ID<br>
-        This function is <b>OBSOLETED</b> and it should be used for only backward compatibility purpose only.
-      </p>
-
-      <blockquote class="content-code">
-        var lwfId = 'lwf_example';<br>
-        var lwfPath = lwfLoader.getLwfPath_(lwfId);<br>
-        => './lwf_example.lwf'<br>
-      </blockquote>
-      <br>
-
       <h3 id="getRenderer" style="margin-top: 5%;">getRenderer
         <code class="simple" style="margin-left: 5%;">getRenderer()</code></h3>
       <p>
@@ -287,19 +266,6 @@
       <blockquote class="content-code">
         lwfLoader.getRenderer();<br>
         => 'useCanvasRenderer' //when using canvas renderer<br>
-      </blockquote>
-      <br>
-
-      <h3 id="isLwfsEnvironment" style="margin-top: 5%;">isLwfsEnvironment_
-        <code class="simple" style="margin-left: 5%;">isLwfsEnvironment_()</code></h3>
-      <p>
-        Check if currently running under LWFS environment.<br>
-        When <code>window['testlwf_settings']</code> is defined, it assumes resource is loaded on LWFS environment.
-      </p>
-
-      <blockquote class="content-code">
-        lwfLoader.isLwfsEnvironment();<br>
-        => true //when running on LWFS environment<br>
       </blockquote>
       <br>
 
@@ -369,28 +335,40 @@
       <p>parameters can be set in lwfSetting field are:</p>
       <pre>
         <code>
-<b>lwf:"testlwf.lwf"</b>,                        <b>mandatory</b>: URL of lwf binary data or lwf.js<br>
-<b>onload:onloadFunction</b>,                    function on load the all data and bitmaps<br>
-<b>stage:stage</b>,                              div or canvas<br>
-<b>js:"testlwf_debug.js"</b>,                    set JavaScript file instead of automatically set<br>
-<b>useBackgroundColor:true</b>,                  fill the stage with the background color of lwf data<br>
-<b>setBackgroundColor:0xfff</b>,                 fill the stage with the specified color(ARGB integer)<br>
-<b>fitForHeight:true</b>,                        fit lwf size for the height<br>
-<b>fitForWidth:true</b>,                         fit lwf size for the width<br>
-<b>prefix:""</b>,                                set the prefix of any url<br>
-<b>imageMap:imageMap</b>,                        name map or renaming function for images<br>
-<b>imagePrefix:""</b>,                           the prefix is (imagePrefix || prefix || "")<br>
-<b>imageSuffix:"@2x"</b>,                        suffix of image, default is empty<br>
-<b>use3D:true</b>,                               Use 3D transform in CSS (default is true)<br>
-<b>onprogress:function(loadedCount,total){}</b>, onprogress function<br>
-<b>worker:false</b>,                             Use Web Workers or not, default is true<br>
-<b>name:name</b>,                                out: LWF name (string)<br>
-<b>error:[{"url":url, "reason":reason}]</b>,     out: filled information about error if error occurred<br>
-<b>loadedCount:loadedCount</b>,                  out: loaded count<br>
-<b>total:total</b>,                              out: total count
+<b>lwf : "testlwf.lwf"</b>,                          <b>mandatory</b>: URL of lwf binary data or lwf.js<br>
+<b>onload : onloadFunction</b>,                      function on load the all data and bitmaps<br>
+<b>stage : stage</b>,                                div or canvas<br>
+<b>js : "testlwf_debug.js"</b>,                      set JavaScript file instead of automatically set<br>
+<b>useBackgroundColor : true</b>,                    fill the stage with the background color of lwf data<br>
+<b>setBackgroundColor : 0xfff</b>,                   fill the stage with the specified color(ARGB integer)<br>
+<b>fitForHeight : true</b>,                          fit lwf size for the height<br>
+<b>fitForWidth : true</b>,                           fit lwf size for the width<br>
+<b>prefix : ""</b>,                                  set the prefix of any url<br>
+<b>imageMap : imageMap</b>,                          name map or renaming function for images<br>
+<b>imagePrefix : ""</b>,                             the prefix is (imagePrefix || prefix || "")<br>
+<b>imageSuffix : "@2x"</b>,                          suffix of image, default is empty<br>
+<b>use3D : true</b>,                                 Use 3D transform in CSS (default is true)<br>
+<b>onprogress : function(loadedCount,total){}</b>,   onprogress function<br>
+<b>worker : false</b>,                               Use Web Workers or not, default is true<br>
+<b>name : name</b>,                                  out: LWF name (string)<br>
+<b>error : [{"url":url, "reason":reason}]</b>,       out: filled information about error if error occurred<br>
+<b>loadedCount : loadedCount</b>,                    out: loaded count<br>
+<b>total : total</b>,                                out: total count
         </code>
       </pre>
+      <br>
 
+      <h3 id="requestLWF" style="margin-top: 5%;">requestLWF
+        <code class="simple" style="margin-left: 5%;">requestLWF(lwf, lwfId, imageMap, privateData, callbackFunc)</code></h3>
+      <p>
+        Sets up parameters for given LWF data and store it in requests array
+        Stored requests will be loaded via loadLWFs function<br>
+      </p>
+
+      <blockquote class="content-code">
+        lwfLoader.requestLWF(lwf, lwfId, imageMap, privateData, callbackFunc);<br>
+        //Stores the parameter required to play given <code>lwf</code> into <code>lwfLoader.requests</code><br>
+      </blockquote>
       <br>
 
       <h3 id="resume" style="margin-top: 5%;">resume
@@ -417,7 +395,8 @@
         &nbsp;&nbsp;resizeStretch: true,<br>
         &nbsp;&nbsp;displayDivId: 'stg',<br>
         &nbsp;&nbsp;widthLimit: 640,<br>
-        &nbsp;&nbsp;heightLimit: 480<br>
+        &nbsp;&nbsp;heightLimit: 480,<br>
+        &nbsp;&nbsp;useLargeImage: false<br>
         };<br>
         <br>
         lwfLoader.setDisplaySetting(displaySetting);<br>
@@ -426,12 +405,13 @@
       <p>Available settings are: </p>
       <pre>
         <code>
-<b>renderer:'canvas'</b>,          rendering mode(canvas, css, webgl)<br>
-<b>resizeMode:'fitForWidth'</b>,   behaviour on window resize, 'fitForWidth' or 'fitForHeight'<br>
-<b>resizeStretch:false</b>,        boolean tells whether stretches LWF to fit window size<br>
-<b>displayDivId:'lwf-stage'</b>,   ID of DOM element which contains LWF resource, used for stretch purpose<br>
-<b>widthLimit:640</b>,             width limit applied to LWF element<br>
-<b>widthHeight:480</b>,            height limit applied to LWF element
+<b>renderer : 'canvas'</b>,          rendering mode(canvas, css, webgl)<br>
+<b>resizeMode : 'fitForWidth'</b>,   behaviour on window resize, 'fitForWidth' or 'fitForHeight'<br>
+<b>resizeStretch : false</b>,        boolean tells whether stretches LWF to fit window size<br>
+<b>displayDivId : 'lwf-stage'</b>,   ID of DOM element which contains LWF resource, used for stretch purpose<br>
+<b>widthLimit : 640</b>,             width limit applied to LWF element<br>
+<b>widthHeight : 480</b>,            height limit applied to LWF element<br>
+<b>useLargeImage : false</b>,        boolean tells whether use images with suffix '_@2x'
         </code>
       </pre>
       <br>

@@ -25,8 +25,6 @@ body,
  * Element Styles
  * --------------------------
 */
-
-
 h1, h2, h3, h4, h5, h6 {
     font-weight: bold;
     color: rgb(75, 75, 75);
@@ -244,6 +242,10 @@ aside {
         padding: 0.6em 0 0.6em 0.6em;
     }
 
+    #menu .highlight-text:hover {
+        color: #007BCF;
+    }
+
     /*
     Remove all background/borders, since we are applying them to #menu.
     */
@@ -285,10 +287,11 @@ aside {
     #menu .pure-menu-heading {
         font-size: 110%;
         color: #fff;
+
     }
     #menu .pure-menu-heading:hover,
     #menu .pure-menu-heading:focus {
-        color: #999;
+        background: #007BCF;
     }
     /*
     This styles a link within a selected menu item `<li>`.
