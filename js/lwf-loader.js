@@ -725,7 +725,7 @@
 
     /** if renderer is not manually defined, auto-select the optimal renderer*/
     if (!this.getRenderer()) {
-      this.setRenderer(global.Utility.getRenderer());
+      this.setRenderer(global.Utility.autoSelectRenderer());
     }
 
     var lwfRenderer = this.getRenderer();
