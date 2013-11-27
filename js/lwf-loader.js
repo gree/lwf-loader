@@ -1141,14 +1141,20 @@
   };
 
   /**
-   * Call LWF's loadLWFs function via loader.
-   * @param {function} myCallback callback to return all LWF instances
+   * Sets up parameters for given LWF data and store it in requests array
+   * Stored requests will be loaded via loadLWFs function
+   * @param {object} lwf parent LWF instance
+   * @param {number} lwfId LWF ID
+   * @param {object} imageMap LWF image map
+   * @param {object} privateData LWF private data
+   * @param {function} myCallback callback to return attach LWF instance
    */
-  LwfLoader.prototype.loadLWFs = function(myCallback) {
-    var LWF = global.LWF;
-    var cache = LWF.ResourceCache.get();
-    cache.loadLWFs(this.requests, myCallback);
-    this.requests = [];
+  LwfLoader.prototype.requestLWF = function(lwf, lwfId, imageMap, privateData, myCallback) {
+    var lwfParam = this.requestLWF_(lwf, lwfId, imageMap, privateData, myCallback);
+    if (_.isNull(lwfParam)) {
+      return;
+    }
+    this.requests.push(lwfParam);
   };
 
   /**
@@ -1164,10 +1170,20 @@
     if (_.isNull(lwfParam)) {
       return;
     }
-
     var LWF = global.LWF;
     var cache = LWF.ResourceCache.get();
     cache.loadLWF(lwfParam);
+  };
+
+  /**
+   * Call LWF's loadLWFs function via loader.
+   * @param {function} myCallback callback to return all LWF instances
+   */
+  LwfLoader.prototype.loadLWFs = function(myCallback) {
+    var LWF = global.LWF;
+    var cache = LWF.ResourceCache.get();
+    cache.loadLWFs(this.requests, myCallback);
+    this.requests = [];
   };
 
   /** set lwf-loader parameters */
