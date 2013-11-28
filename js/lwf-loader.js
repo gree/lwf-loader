@@ -745,11 +745,8 @@
       global.LWFLOADER_ENABLE_DEBUG = true;
     }
 
-    /**
-     * prepare parameters that will be passed into LWF,
-     * by default it reads parameters previously stored in lwfDefaultParam
-     */
-    var myLwfParam = _.isObject(global.lwfDefaultParam) ? _.clone(global.lwfDefaultParam) : {};
+    /** store necessary parameters into this object */
+    var myLwfParam = {};
 
     /** set load event handler */
     myLwfParam.onload = this.onLoad;
