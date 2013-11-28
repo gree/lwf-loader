@@ -46,7 +46,8 @@
     global.oRequestAnimationFrame ||
     global.msRequestAnimationFrame;
 
-  if (global.requestAnimationFrame === undefined) {
+  /** apply polyfills for iOS6 devices */
+  if (global.requestAnimationFrame === undefined || /iP(ad|hone|od).*OS 6/.test(userAgent)) {
     (function() {
       var vsync = 1000 / 60;
       var t0 = global.performance.now();
