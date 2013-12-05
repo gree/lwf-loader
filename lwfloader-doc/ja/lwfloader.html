@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="LWF Loader Document">
+
+  <title>LWF Loader Document</title>
+
+  <link rel="stylesheet" href="../css/purecss-min.css">
+  <link rel="stylesheet" href="../css/side-menu.css">
+</head>
+<body>
+
+<div id="layout">
+  <!-- Menu toggle -->
+  <a href="#menu" id="menuLink" class="pure-menu-link">
+    <!-- Hamburger icon -->
+    <span></span>
+  </a>
+
+  <div id="menu">
+    <div class="pure-menu pure-menu-open">
+      <a class="pure-menu-heading" href="#main">LWF Loader</a>
+      <a class="highlight-text" href="http://gree.github.io/lwf-loader/" style="font-size: 90%; margin-left: 0; margin-top: -5px;">Overview</a>
+      <a class="highlight-text" href="https://github.com/gree/lwf-loader/" style="font-size: 90%; margin-left: 0; margin-bottom: 10px; margin-top: -10px;">Github Link</a>
+      <ul>
+        <li class="pure-menu-selected menu-item-divided">
+          <a href="#_global_">_global_</a>
+        </li>
+
+        <li class="pure-menu menu-item-text">
+          <a href="#isAndroid">isAndroid</a>
+        </li>
+        <li class="pure-menu menu-item-text">
+          <a href="#isChrome">isChrome</a>
+        </li>
+        <li class="pure-menu menu-item-text">
+          <a href="#isiOS">isiOS</a>
+        </li>
+        <li class="pure-menu menu-item-text">
+          <a href="#isPreventDefaultEnabled">isPreventDefaultEnabled</a>
+        </li>
+        <li class="pure-menu menu-item-text">
+          <a href="#isSP">isSP</a>
+        </li>
+        <li class="pure-menu menu-item-text">
+          <a href="#isTouchEventEnabled">isTouchEventEnabled</a>
+        </li>
+        <li class="pure-menu menu-item-text">
+          <a href="#userAgent">userAgent</a>
+        </li>
+        <li class="pure-menu menu-item-text">
+          <a href="#useWebWorker">useWebWorker</a>
+        </li>
+
+        <li class="pure-menu-selected menu-item-divided" style="margin-top: 5%;">
+          <a href="#LwfLoader">LwfLoader</a>
+        </li>
+        <li class="pure-menu menu-item-text">
+          <a href="#constructor">Constructor</a>
+        </li>
+        <li class="pure-menu menu-item-text">
+          <a href="#addInitializeHook">addInitializeHook</a>
+        </li>
+        <li class="pure-menu menu-item-text">
+          <a href="#getCurrentFPS">getCurrentFPS</a>
+        </li>
+        <li class="pure-menu menu-item-text">
+          <a href="#getRenderer">getRenderer</a>
+        </li>
+        <li class="pure-menu menu-item-text">
+          <a href="#loadLWF">loadLWF</a>
+        </li>
+        <li class="pure-menu menu-item-text">
+          <a href="#loadLWFs">loadLWFs</a>
+        </li>
+        <li class="pure-menu menu-item-text">
+          <a href="#pause">pause</a>
+        </li>
+        <li class="pure-menu menu-item-text">
+          <a href="#playLWF">playLWF</a>
+        </li>
+        <li class="pure-menu menu-item-text">
+          <a href="#requestLWF">requestLWF</a>
+        </li>
+        <li class="pure-menu menu-item-text">
+          <a href="#resume">resume</a>
+        </li>
+        <li class="pure-menu menu-item-text">
+          <a href="#setDisplaySetting">setDisplaySetting</a>
+        </li>
+        <li class="pure-menu menu-item-text">
+          <a href="#setRenderer">setRenderer</a>
+        </li>
+      </ul>
+      <br><br>
+    </div>
+  </div>
+
+  <div id="main">
+    <div class="header">
+      <h1 id="title">LWF Loader</h1>
+      <h2>Loads LWF in a simple and elegant way.</h2>
+    </div>
+
+    <div class="content">
+      <h2 id="_global_" class="content-subhead">_global_ Objects<a href="#_global_" class="content-link"></a></h2>
+      <h3 id="isAndroid" style="margin-top: 5%;">isAndroid</h3>
+      <p>
+        現在Android端末上で動作していることを示すフラグです。
+      </p>
+      <blockquote class="content-code">
+        if (isAndroid)<br>
+        => trueの場合はAndroid端末上で動作しています。
+      </blockquote>
+      <br>
+      <h3 id="isChrome">isChrome</h3>
+      <p>
+        現在Google Chrome上で動作していることを示すフラグです。
+      </p>
+      <blockquote class="content-code">
+        if (isChrome)<br>
+        => trueの場合はGoogle Chrome上で動作しています。
+      </blockquote>
+      <br>
+      <h3 id="isiOS">isiOS</h3>
+      <p>
+          現在iOS上で動作していることを示すフラグです。
+      </p>
+      <blockquote class="content-code">
+        if (isiOS)<br>
+        => trueの場合はiOS端末上で動作しています。
+      </blockquote>
+      <br>
+      <h3 id="isPreventDefaultEnabled">isPreventDefaultEnabled</h3>
+      <p>
+        このフラグはブラウザイベントのpreventDefaultを実行するかを示します。
+      </p>
+      <blockquote class="content-code">
+        isPreventDefaultEnabled = true;<br>
+        => このフラグを立てるとタッチイベント(press, move)の動作を変更できます。
+      </blockquote>
+      <br>
+      <h3 id="isSP">isSP</h3>
+      <p>
+        現在スマートフォン上で動作していることを示すフラグです。
+      </p>
+      <blockquote class="content-code">
+        if (isSP)<br>
+        => trueの場合はiOS端末かAndroid端末上で動作しています。
+      </blockquote>
+      <br>
+      <h3 id="isTouchEventEnabled">isTouchEventEnabled</h3>
+      <p>
+        タッチイベントが有効かを示すフラグです。
+      </p>
+      <blockquote class="content-code">
+        var isTouchEventEnabled = isSP;<br>
+        => デフォルトではisSPがtrueの場合にこのフラグもtrueです。
+      </blockquote>
+      <br>
+      <h3  id="userAgent">userAgent</h3>
+      <p>
+          navigator.userAgentオブジェクトのコピーです。
+      </p>
+      <blockquote class="content-code">
+        var userAgent = navigator.userAgent;
+      </blockquote>
+      <br>
+      <h3 id="useWebWorker">useWebWorker</h3>
+      <p>
+        Web Workersが有効かを示すフラグです。
+      </p>
+      <blockquote class="content-code">
+        var useWebWorker = !isAndroid || isChrome;<br>
+        => Android標準ブラウザではfalseですが、Android Chromeの場合はtrueになります。その他の環境ではfalseです。
+      </blockquote>
+      <br>
+
+      <hr>
+
+      <h2 id="LwfLoader" class="content-subhead">Lwf Loader<a href="#LwfLoader" class="content-link"></a></h2>
+
+      <h3 id="constructor" style="margin-top: 5%;">LwfLoader Constructor
+        <code class="simple" style="margin-left: 5%;">new LwfLoader()</code></h3>
+      <p>
+          lwf-loaderの新しいインスタンスを生成します。 lwf-loaderは初期値で初期化されます。<br>
+      </p>
+
+      <blockquote class="content-code">
+        new LwfLoader();<br>
+        //全てのメンバ変数は初期値で初期化されます。
+      </blockquote>
+      <p>LwfLoader class members</p>
+      <pre>
+        <code>
+<b>initializeHooks : []</b>,                    バインドされたフック関数を含む配列です。<br>
+<b>requests : []</b>,                           読み込まれたLWFパラメータを含む配列です。<br>
+<b>pausing: false</b>,                          このフラグはアニメーション中かどうかを示します。<br>
+<b>loadingCount : 0</b>,                        LWFとリソースの読み込み進捗をスタックします。<br>
+<b>debug : false</b>,                           このフラグを立てるとデバッグ情報を画面に出したりログを出します。<br>
+<b>backgroundColor : null</b>,                  描画領域の背景色をARGBで指定します。<br>
+<b>resizeMode : 'fitForWidth'</b>,              fitForWidthかfitForHeightで画面の縦横どちらに合わせるかを指定します。<br>
+<b>resizeStretch : false</b>,                   ウインドウのリサイズ時にLWFが伸び縮みするかどうかを占めるフラグです。<br>
+<b>displayDivId : null</b>,                     LWFのリソースが含まれているDOMエレメントをIDで指定します。<br>
+<b>widthLimit : 0</b>,                          LWFの描画エレメントの横幅の最大値を指定します。<br>
+<b>heightLimit : 0</b>,                         LWFの描画エレメントの高さの最大値を指定します。<br>
+<b>useLargeImage : false</b>,                   このフラグを立てると画像のファイル名の最後に'_@2x'をつけます。<br>
+<b>rootOffset : { x:0, y:0 }</b>,               rootムービーの描画領域座標を指定します。
+        </code>
+      </pre>
+      <br>
+
+      <h3 id="addInitializeHook" style="margin-top: 5%;">addInitializeHook
+        <code class="simple" style="margin-left: 5%;">addInitializeHook(hookFunc)</code></h3>
+      <p>
+        LWFを再生する前に、対応するフック関数を追加します。
+        デバッグ用の関数などを定義するのが主な使い方です。
+      </p>
+
+      <blockquote class="content-code">
+        var paramHandler = function() { <br>
+        &nbsp;&nbsp;return { <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;handler: { <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loadError: function(e) { console.log(e); }, <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exception: function(e) { console.log(e); } <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;} <br>
+        &nbsp;&nbsp;};<br>
+        };<br>
+        <br>
+        var paramCallback = function() { <br>
+        &nbsp;&nbsp;return { <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;callback: { <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;onLoad: function(lwf) { console.log(lwf); } <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;} <br>
+        &nbsp;&nbsp;};<br>
+        };<br>
+        <br>
+        lwfLoader.addInitializeHook(paramHandler);<br>
+        lwfLoader.addInitializeHook(paramCallback);<br>
+        <br>
+        //自前で定義したフック関数がバインドされます。<br>
+        //<b>サポートされるのは <code>exception</code>と<code>loadError</code>,
+        コールバックされる<code>onLoad</code>関数です。</b>
+      </blockquote>
+      <br>
+
+      <h3 id="getCurrentFPS" style="margin-top: 5%;">getCurrentFPS
+        <code class="simple" style="margin-left: 5%;">getCurrentFPS()</code></h3>
+      <p>
+        現時点のFPSを返します。
+      </p>
+      <blockquote class="content-code">
+        lwfLoader.getCurrentFPS();<br>
+        => 60 <br>
+      </blockquote>
+      <br>
+
+      <h3 id="getRenderer" style="margin-top: 5%;">getRenderer
+        <code class="simple" style="margin-left: 5%;">getRenderer()</code></h3>
+      <p>
+          今使っているレンダラーの名前が文字列で返します。
+      </p>
+
+      <blockquote class="content-code">
+        lwfLoader.getRenderer();<br>
+        => 'useCanvasRenderer' //canvasレンダラーの場合<br>
+      </blockquote>
+      <br>
+
+      <h3 id="loadLWF" style="margin-top: 5%;">loadLWF
+        <code class="simple" style="margin-left: 5%;">loadLWF(lwf, lwfId, imageMap, privateData, callbackFunc)</code></h3>
+      <p>
+          現在のLWFに外部から読み込んだLWFをアタッチします。<br>
+      </p>
+
+      <blockquote class="content-code">
+        lwfLoader.loadLWF(lwf, lwfId, imageMap, privateData, callbackFunc);<br>
+        //読み込んだリソースを既にあるLWFのインスタンスにアタッチします。<br>
+      </blockquote>
+      <br>
+
+      <h3 id="loadLWFs" style="margin-top: 5%;">loadLWFs
+        <code class="simple" style="margin-left: 5%;">loadLWFs(callbackFunc)</code></h3>
+      <p>
+         LWF本体のloadLWFs関数をloaderから呼びます。<br>
+      </p>
+
+      <blockquote class="content-code">
+        lwfLoader.loadLWFs(callbackFunc);<br>
+        //LWF.loadLWFsと同じ呼び出しをできますがloaderでは頻繁に使われないです。<br>
+        //主に後方互換対応で使われます。<br>
+      </blockquote>
+      <br>
+
+      <h3 id="pause" style="margin-top: 5%;">pause
+        <code class="simple" style="margin-left: 5%;">pause()</code></h3>
+      <p>
+        LWFの再生を止めます。<br>
+      </p>
+
+      <blockquote class="content-code">
+        lwfLoader.pause();<br>
+        //アニメーションを一時停止します。<br>
+      </blockquote>
+      <br>
+
+      <h3 id="playLWF" style="margin-top: 5%;">playLWF
+        <code class="simple" style="margin-left: 5%;">playLWF(lwfDOMElement, lwfSetting)</code></h3>
+      <p>
+        渡したパラメータを使ってLWFを再生します。 ユーザーが定義したフィールドからLWFの再生に必要なパラメータを取り出しセットします。データが渡されない時はデフォルト値をセットします。一つのLWFに呼び出されたすべてのLWFが、同じ​​loaderの設定を使う必要があるため、親LWFを再生する時に必ず使用してください。playLWF内でloaderの設定を保存し、子LWFの再生の時に使いまわします。
+        <br>
+      </p>
+
+      <blockquote class="content-code">
+        var targetElem = document.getElementById('lwf-DOM');<br>
+        <br>
+        var lwfSetting = {<br>
+        &nbsp;&nbsp;lwf: "./example.lwf",<br>
+        &nbsp;&nbsp;prefix: "./lwf/",<br>
+        &nbsp;&nbsp;imagePrefix: "./lwf/",<br>
+        &nbsp;&nbsp;privateData: {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;limitTimeSeconds:360<br>
+        &nbsp;&nbsp;}<br>
+        };<br>
+        <br>
+        lwfLoader.playLWF(targetElem, lwfSetting);<br>
+        //LWFアニメーションを再生します。<br>
+        //パラメータは<b>lwfParam</b>に保存されLWFに渡されます。<br>
+      </blockquote>
+      <p>parameters can be set in lwfSetting field are:</p>
+      <pre>
+        <code>
+<b>lwf : "testlwf.lwf"</b>,                          <b>必須</b>: LWFバイナリーのURLかlwf.jsを指定します。<br>
+<b>onload : onloadFunction</b>,                      必要な全データを読む関数です。<br>
+<b>stage : stage</b>,                                div か canvasです。<br>
+<b>js : "testlwf_debug.js"</b>,                      自動セットの代わりにJavaScriptをセットします。<br>
+<b>useBackgroundColor : true</b>,                    描画領域にLWFデータの背景色を使います。<br>
+<b>setBackgroundColor : 0xfff</b>,                   描画領域にARGBで指定された背景色を使います。<br>
+<b>fitForHeight : true</b>,                          LWFを縦幅にフィットさせます。<br>
+<b>fitForWidth : true</b>,                           LWFを横幅にフィットさせます。<br>
+<b>prefix : ""</b>,                                  全URLのプレフィックスを設定します。<br>
+<b>imageMap : imageMap</b>,                          画像名を再マッピングする関数です<br>
+<b>imagePrefix : ""</b>,                             画像パスの先頭に付与される文字列です。<br>
+<b>imageSuffix : "@2x"</b>,                          画像ファイルの末尾に付与する文字列で、デフォルトは空です。<br>
+<b>use3D : true</b>,                                 CSSの3Dtransformを使うかどうかのフラグです(デフォルトはtrue)<br>
+<b>onprogress : function(loadedCount,total){}</b>,   進捗を表示する関数です。<br>
+<b>worker : false</b>,                               Web Workersを使うかどうかの設定です。デフォルトは使います。<br>
+<b>name : name</b>,                                  LWFの名前を出力します。<br>
+<b>error : [{"url":url, "reason":reason}]</b>,       エラーとエラーの原因を出力します。<br>
+<b>loadedCount : loadedCount</b>,                    現在の読み込みが完了しているリソース数です。<br>
+<b>total : total</b>,                                全リソースの数です。
+        </code>
+      </pre>
+      <br>
+
+      <h3 id="requestLWF" style="margin-top: 5%;">requestLWF
+        <code class="simple" style="margin-left: 5%;">requestLWF(lwf, lwfId, imageMap, privateData, callbackFunc)</code></h3>
+      <p>
+        与えられたLWF用のパラメータを設定し、それがリクエストした配列に格納し<br>
+        格納されたリクエストは、loadLWFs関数からロードされます
+      </p>
+
+      <blockquote class="content-code">
+        lwfLoader.requestLWF(lwf, lwfId, imageMap, privateData, callbackFunc);<br>
+        //格納されたパラメータはLWFを再生するのに必要です
+      </blockquote>
+      <br>
+
+      <h3 id="resume" style="margin-top: 5%;">resume
+        <code class="simple" style="margin-left: 5%;">resume()</code></h3>
+      <p>
+          一時停止した状態からLWFを再生しはじめます。<br>
+      </p>
+
+      <blockquote class="content-code">
+        lwfLoader.resume();<br>
+        //一時停止した状態から再生しはじめます。<br>
+      </blockquote>
+      <br>
+
+      <h3 id="setDisplaySetting" style="margin-top: 5%;">setDisplaySetting
+        <code class="simple" style="margin-left: 5%;">setDisplaySetting(displaySetting)</code></h3>
+      <p>
+        渡されたパラメータでLwfLoaderの表示設定を行います。<br>
+      </p>
+
+      <blockquote class="content-code">
+        var displaySetting = {<br>
+        &nbsp;&nbsp;resizeMode: "fitForWidth",<br>
+        &nbsp;&nbsp;resizeStretch: true,<br>
+        &nbsp;&nbsp;displayDivId: 'stg',<br>
+        &nbsp;&nbsp;widthLimit: 640,<br>
+        &nbsp;&nbsp;heightLimit: 480,<br>
+        &nbsp;&nbsp;useLargeImage: false<br>
+        };<br>
+        <br>
+        lwfLoader.setDisplaySetting(displaySetting);<br>
+        // LWFの再生時に表示設定を渡します。<br>
+      </blockquote>
+      <p>有効な設定は以下の通りです。 </p>
+      <pre>
+        <code>
+<b>renderer : 'canvas'</b>,          レンダラーを指定できます。(canvas, css, webgl)<br>
+<b>resizeMode : 'fitForWidth'</b>,   ウィンドウリサイズ時の動作を指定できます。(fitForWidth, fitForHeight)<br>
+<b>resizeStretch : false</b>,        ウインドウに合わせてLWFが伸び縮みするかを示すフラグです。<br>
+<b>displayDivId : 'lwf-stage'</b>,   LWFのリソースがあるDOMエレメントのIDです。LWFを伸び縮みする為の物です。<br>
+<b>widthLimit : 640</b>,             LWFエレメントの全幅です。<br>
+<b>widthHeight : 480</b>,            LWFエレメントの全高です。<br>
+<b>useLargeImage : false</b>,        このフラグを立てると画像のファイル名の最後に'_@2x'をつけます。
+        </code>
+      </pre>
+      <br>
+
+      <h3 id="setRenderer" style="margin-top: 5%;">setRenderer
+        <code class="simple" style="margin-left: 5%;">setRenderer(renderer)</code></h3>
+      <p>
+        レンダリングモードを指定できます。<br>
+      </p>
+
+      <blockquote class="content-code">
+        var myRenderer = 'webkitcss';<br>
+        lwfLoader.setRenderer(myRenderer);<br>
+        lwfLoader.getRenderer();<br>
+        => 'useWebkitCSSRenderer' //CSS レンダラーがセットされています。<br>
+      </blockquote>
+      <p>以下のレンダラーが使用できます。 </p>
+      <pre style="width: 350px;">
+        <code>
+<b>canvas</b>  //Canvasレンダラーの短縮形です。<br>
+<b>webkitcss</b>  //CSS レンダラーの短縮形です。<br>
+<b>webgl</b>  //WebGL レンダラーの短縮形です。<br>
+<b>useCanvasRenderer</b><br>
+<b>useWebkitCSSRenderer</b><br>
+<b>useWebGLRenderer</b>
+        </code>
+      </pre>
+      <br>
+    </div>
+  </div>
+</div>
+<script src="js/ui.js"></script>
+</body>
+</html>
