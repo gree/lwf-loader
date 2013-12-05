@@ -96,6 +96,9 @@
    * @property {string} displayDivId id of element playing LWF resource
    * @property {int} widthLimit limit value for the width of resource
    * @property {int} heightLimit limit value for the height of resource
+   * @property {int} stageWidth custom stage width value, 0 if undefined
+   * @property {int} stageHeight custom stage height value, 0 if undefined
+   * @property {boolean} whether using high-resolution images
    * @return {*}
    * @constructor
    */
@@ -112,6 +115,8 @@
     this.displayDivId = null;
     this.widthLimit = 0;
     this.heightLimit = 0;
+    this.stageWidth = 0;
+    this.stageHeight = 0;
     this.useLargeImage = false;
 
     this.rootOffset = {
@@ -301,6 +306,8 @@
     this.displayDivId = lwfDisplaySetting.displayDivId || this.displayDivId;
     this.widthLimit = lwfDisplaySetting.widthLimit || this.widthLimit;
     this.heightLimit = lwfDisplaySetting.heightLimit || this.heightLimit;
+    this.stageWidth = lwfDisplaySetting.stageWidth || this.stageWidth;
+    this.stageHeight = lwfDisplaySetting.stageHeight || this.stageHeight;
     this.useLargeImage = lwfDisplaySetting.useLargeImage || this.useLargeImage;
   };
 
@@ -411,8 +418,11 @@
           devicePixelRatio = 1;
         }
 
-        var width = lwf.width;
-        var height = lwf.height;
+        var width = loader.stageWidth ? loader.stageWidth : lwf.width;
+        var height = loader.stageHeight ? loader.stageHeight : lwf.height;
+        var resourceWidth = width;
+        var resourceHeight = height;
+
         var innerWidth = global.innerWidth;
         var innerHeight = global.innerHeight;
 
@@ -442,12 +452,12 @@
               width = (width > setting.widthLimit) ? setting.widthLimit : width;
             }
             stageWidth = Math.round(width);
-            stageHeight = Math.round(width * lwf.height / lwf.width);
+            stageHeight = Math.round(width * resourceHeight / resourceWidth);
           } else {
             if (setting.heightLimit) {
               height = (height > setting.heightLimit) ? setting.heightLimit : height;
             }
-            stageWidth = Math.round(height * lwf.width / lwf.height);
+            stageWidth = Math.round(height * resourceWidth / resourceHeight);
             stageHeight = Math.round(height);
           }
 
