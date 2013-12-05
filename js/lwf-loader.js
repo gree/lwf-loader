@@ -776,7 +776,7 @@
     myLwfParam.worker = useWebWorker;
 
     /** handle buggy css behaviour in certain devices */
-    if (isAndroid && / SC-0/.test(userAgent) && lwfRenderer === 'useWebkitCSSRenderer') {
+    if (isAndroid && / (SC-0|Galaxy Nexus)/.test(userAgent) && lwfRenderer === 'useWebkitCSSRenderer') {
       myLwfParam.quirkyClearRect = true;
     }
 
