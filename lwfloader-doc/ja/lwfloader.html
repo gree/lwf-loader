@@ -290,7 +290,7 @@
       <blockquote class="content-code">
         lwfLoader.loadLWFs(callbackFunc);<br>
         //LWF.loadLWFsと同じ呼び出しをできますがloaderでは頻繁に使われないです。<br>
-        //主に互換性の問題のために使われるべきです。<br>
+        //主に後方互換対応で使われます。<br>
       </blockquote>
       <br>
 
@@ -309,10 +309,7 @@
       <h3 id="playLWF" style="margin-top: 5%;">playLWF
         <code class="simple" style="margin-left: 5%;">playLWF(lwfDOMElement, lwfSetting)</code></h3>
       <p>
-        渡したパラメータを使ってLWFを再生します。<b>playLWF</b> LWFアニメーションの再生に必要なパラメータをセットします。
-        これはユーザーが定義したフィールドからパラメータを取り出しセットします。データが渡されない時はデフォルト値をセットします。
-        この関数は、このLWFに呼び出されたすべてのLWFが、同じ​​loaderの設定を使う必要がある親LWFをロードし再生するために使われます。
-        このようにloaderの設定はさらに読み込むことを目的としてセーブされます。
+        渡したパラメータを使ってLWFを再生します。 ユーザーが定義したフィールドからLWFの再生に必要なパラメータを取り出しセットします。データが渡されない時はデフォルト値をセットします。一つのLWFに呼び出されたすべてのLWFが、同じ​​loaderの設定を使う必要があるため、親LWFを再生する時に必ず使用してください。playLWF内でloaderの設定を保存し、子LWFの再生の時に使いまわします。
         <br>
       </p>
 
