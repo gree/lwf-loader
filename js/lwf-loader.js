@@ -434,6 +434,9 @@
         }
 
         if (widthInit !== width || heightInit !== height) {
+          widthInit = width;
+          heightInit = height;
+
           if (setting.fitForWidth) {
             if (setting.widthLimit) {
               width = (width > setting.widthLimit) ? setting.widthLimit : width;
@@ -462,8 +465,6 @@
             lwf.property.clear();
             lwf.fitForHeight(stage.width, stage.height);
           }
-          widthInit = width;
-          heightInit = height;
 
           /** set the external div size */
           if (loader.displayDivId) {
