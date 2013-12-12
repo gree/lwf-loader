@@ -10,6 +10,11 @@ window.Utility = {};
 window.Utility.autoSelectRenderer = function() {
   var userAgent = navigator.userAgent;
 
+  /** iOS 4 devices should use CSS renderer due to spec issue */
+  if (/iP(ad|hone|od).*OS 4/.test(userAgent)) {
+    return 'useWebkitCSSRenderer';
+  }
+
   /** Android 2.1 does not work with Canvas, force to use CSS renderer */
   if (/Android 2\.1/.test(userAgent)) {
     return 'useWebkitCSSRenderer';

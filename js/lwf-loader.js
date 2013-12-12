@@ -23,7 +23,7 @@
   var useWebWorker = !isAndroid || isChrome;
 
   /** preventDefault() might cause unstable Android bugs */
-  var isPreventDefaultEnabled = /(iPhone|iPad)/.test(userAgent) || /Android *(4|3)\..*/.test(userAgent);
+  var isPreventDefaultEnabled = /iP(ad|hone|od)/.test(userAgent) || /Android *(4|3)\..*/.test(userAgent);
 
   /** For displaying debug FPS information */
   var debugInfoElementId = 0;
