@@ -5,7 +5,7 @@
   var userAgent = navigator.userAgent;
 
   /** Whether currently running on iOS @type {boolean} */
-  var isiOS = (/iPhone/.test(userAgent) || /iPod/.test(userAgent) || /iPad/.test(userAgent));
+  var isiOS = /iP(ad|hone|od)/.test(userAgent);
 
   /** Whether currently running on Android @type {boolean} */
   var isAndroid = (/Android/.test(userAgent));
@@ -23,7 +23,7 @@
   var useWebWorker = !isAndroid || isChrome;
 
   /** preventDefault() might cause unstable Android bugs */
-  var isPreventDefaultEnabled = /iP(ad|hone|od)/.test(userAgent) || /Android *(4|3)\..*/.test(userAgent);
+  var isPreventDefaultEnabled = isiOS || /Android *(4|3)\..*/.test(userAgent);
 
   /** For displaying debug FPS information */
   var debugInfoElementId = 0;
