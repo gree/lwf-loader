@@ -98,6 +98,8 @@
    * @property {int} heightLimit limit value for the height of resource
    * @property {int} stageWidth custom stage width value, 0 if undefined
    * @property {int} stageHeight custom stage height value, 0 if undefined
+   * @property {int} stageHAlign flag tells how the display area will be aligned horizontally
+   * @property {int} stageVAlign flag tells how the display area will be aligned vertically
    * @property {boolean} whether using high-resolution images
    * @return {*}
    * @constructor
@@ -117,6 +119,8 @@
     this.heightLimit = 0;
     this.stageWidth = 0;
     this.stageHeight = 0;
+    this.stageHAlign = -1; // -1: left, 0: center, 1: right
+    this.stageVAlign = -1; // -1: top, 0: center, 1: bottom
     this.useLargeImage = false;
 
     this.rootOffset = {
@@ -308,6 +312,8 @@
     this.heightLimit = lwfDisplaySetting.heightLimit || this.heightLimit;
     this.stageWidth = lwfDisplaySetting.stageWidth || this.stageWidth;
     this.stageHeight = lwfDisplaySetting.stageHeight || this.stageHeight;
+    this.stageHAlign = lwfDisplaySetting.stageHAlign || this.stageHAlign;
+    this.stageVAlign = lwfDisplaySetting.stageVAlign || this.stageVAlign;
     this.useLargeImage = lwfDisplaySetting.useLargeImage || this.useLargeImage;
   };
 
@@ -420,8 +426,6 @@
 
         var width = loader.stageWidth ? loader.stageWidth : lwf.width;
         var height = loader.stageHeight ? loader.stageHeight : lwf.height;
-        var resourceWidth = width;
-        var resourceHeight = height;
 
         var innerWidth = global.innerWidth;
         var innerHeight = global.innerHeight;
@@ -452,15 +456,37 @@
               width = (width > setting.widthLimit) ? setting.widthLimit : width;
             }
             stageWidth = Math.round(width);
-            stageHeight = Math.round(width * resourceHeight / resourceWidth);
+            stageHeight = Math.round(width * lwf.height / lwf.width);
           } else {
             if (setting.heightLimit) {
               height = (height > setting.heightLimit) ? setting.heightLimit : height;
             }
-            stageWidth = Math.round(height * resourceWidth / resourceHeight);
+            stageWidth = Math.round(height * lwf.width / lwf.height);
             stageHeight = Math.round(height);
           }
 
+          /** offset setting inside the stage */
+          var offsetX = 0;
+          var offsetY = 0;
+
+          if (loader.stageHAlign == -1) {
+            offsetX = 0;
+          } else if (loader.stageHAlign == 1) {
+            offsetX = Math.round(width - stageWidth);
+          } else {
+            offsetX = Math.round((width - stageWidth) / 2);
+          }
+
+          if (loader.stageVAlign == -1) {
+            offsetY = 0;
+          } else if (loader.stageVAlign == 1) {
+            offsetY = Math.round(height - stageHeight);
+          } else {
+            offsetY = Math.round((height - stageHeight) / 2);
+          }
+
+          stageEventReceiver.style.left = stage.style.left = offsetX + 'px';
+          stageEventReceiver.style.top = stage.style.top = offsetY + 'px';
           stageEventReceiver.style.width = stage.style.width = stageWidth + 'px';
           stageEventReceiver.style.height = stage.style.height = stageHeight + 'px';
 
