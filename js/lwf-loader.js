@@ -194,7 +194,16 @@
    * @private
    */
   LwfLoader.prototype.isLwfsEnvironment_ = function() {
-    return global.testlwf_settings;
+    return global.testlwf_settings && !(this.isLwfsLoaderEnvironment_());
+  };
+
+  /**
+   * check if currently running under LWFS environment with loader option
+   * @return {Boolean} if currently running under lwfs(loader option), return true
+   * @private
+   */
+  LwfLoader.prototype.isLwfsLoaderEnvironment_ = function() {
+    return global.lwfs_loader_mode;
   };
 
   /**
@@ -271,7 +280,7 @@
       myLwfId = lwfId.substring(lwfId.lastIndexOf('/') + 1);
     }
 
-    if (this.isLwfsEnvironment_()) {
+    if (this.isLwfsEnvironment_() || this.isLwfsLoaderEnvironment_()) {
       path = myLwfId + '.lwf';
     } else {
       path = lwfId + '/_/' + myLwfId + '.lwf';
@@ -1077,10 +1086,8 @@
         myCallback('no LWF input', null);
         return null;
       }
+
       lwfParam.lwf = lwfInput;
-      if (isAndroid) {
-        lwfParam.lwf += '.js';
-      }
       lwfParam.parentLWF = lwf;
       lwfParam.stage = lwf.stage;
       lwfParam.worker = useWebWorker;
@@ -1125,18 +1132,37 @@
       lwfParam.fitForHeight = lwfParam.fitForWidth = false;
       myLoaderData.setting = lwfParam;
 
-      lwfInput = null;
-      try {
-        lwfInput = (this.getLwfMapper_(myLoaderData))(lwfId);
-      } catch (myException) {
-        this.handleException_(myException, myLoaderData);
+      /* Do no inherit parents' prefix when running under LWFS */
+      if (this.isLwfsLoaderEnvironment_()) {
+        /* sets prefix for child LWF for LWFS usage*/
+        prefix = document.location.pathname;
+        prefix = prefix.replace(lwf.name, lwfId);
+        prefix = prefix.slice(0, prefix.lastIndexOf('/') + 1) + '_/';
+
+        lwfParam.prefix = prefix;
+        delete lwfParam.imagePrefix;
+
+        lwfInput = this.getLwfPath_(lwfId);
+        if (!lwfInput) {
+          console.error('[LWF] no LWF input');
+          myCallback('no LWF input', null);
+          return null;
+        }
+      } else {
+        lwfInput = null;
+        try {
+          lwfInput = (this.getLwfMapper_(myLoaderData))(lwfId);
+        } catch (myException) {
+          this.handleException_(myException, myLoaderData);
+        }
+
+        if (!lwfInput) {
+          console.error('[LWF] no LWF input');
+          myCallback('no LWF input', null);
+          return null;
+        }
       }
 
-      if (!lwfInput) {
-        console.error('[LWF] no LWF input');
-        myCallback('no LWF input', null);
-        return null;
-      }
       lwfParam.lwf = lwfInput;
       if (myLoaderData.useLwfJs) {
         lwfParam.lwf += '.js';
