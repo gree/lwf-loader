@@ -321,8 +321,10 @@
     this.heightLimit = lwfDisplaySetting.heightLimit || this.heightLimit;
     this.stageWidth = lwfDisplaySetting.stageWidth || this.stageWidth;
     this.stageHeight = lwfDisplaySetting.stageHeight || this.stageHeight;
-    this.stageHAlign = lwfDisplaySetting.stageHAlign || this.stageHAlign;
-    this.stageVAlign = lwfDisplaySetting.stageVAlign || this.stageVAlign;
+    this.stageHAlign =
+      (lwfDisplaySetting.stageHAlign != null) ? lwfDisplaySetting.stageHAlign : this.stageHAlign;
+    this.stageVAlign =
+      (lwfDisplaySetting.stageVAlign != null) ? lwfDisplaySetting.stageVAlign : this.stageVAlign;
     this.useLargeImage = lwfDisplaySetting.useLargeImage || this.useLargeImage;
   };
 
