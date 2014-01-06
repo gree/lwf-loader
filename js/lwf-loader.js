@@ -22,9 +22,6 @@
   /** Turn off Web Worker on Android native browser, allow it runs on Android Chrome  @type {boolean} */
   var useWebWorker = !isAndroid || isChrome;
 
-  /** preventDefault() might cause unstable Android bugs */
-  var isPreventDefaultEnabled = isiOS || /Android *(4|3)\..*/.test(userAgent);
-
   /** For displaying debug FPS information */
   var debugInfoElementId = 0;
 
@@ -100,7 +97,8 @@
    * @property {int} stageHeight custom stage height value, 0 if undefined
    * @property {int} stageHAlign flag tells how the display area will be aligned horizontally
    * @property {int} stageVAlign flag tells how the display area will be aligned vertically
-   * @property {boolean} whether using high-resolution images
+   * @property {boolean} useLargeImage whether using high-resolution images
+   * @property {boolean} isPreventDefaultEnabled flag tells whether enable preventDefault
    * @return {*}
    * @constructor
    */
@@ -122,6 +120,9 @@
     this.stageHAlign = -1; // -1: left, 0: center, 1: right
     this.stageVAlign = -1; // -1: top, 0: center, 1: bottom
     this.useLargeImage = false;
+
+    /** preventDefault() might cause unstable Android bugs */
+    this.isPreventDefaultEnabled = isiOS || /Android *(4|3)\..*/.test(userAgent);
 
     this.rootOffset = {
       x: 0,
@@ -204,6 +205,14 @@
    */
   LwfLoader.prototype.isLwfsLoaderEnvironment_ = function() {
     return global.lwfs_loader_mode;
+  };
+
+  /**
+   * set isPreventDefaultEnabled flag
+   * @param {boolean} preventDefaultBehaviour
+   */
+  LwfLoader.prototype.setPreventDefaultBehaviour_ = function(preventDefaultBehaviour) {
+    this.isPreventDefaultEnabled = preventDefaultBehaviour;
   };
 
   /**
@@ -552,7 +561,7 @@
      */
     onMove = function(myEvent) {
       try {
-        if (isPreventDefaultEnabled) {
+        if (loader.isPreventDefaultEnabled) {
           myEvent.preventDefault();
         }
         if (!lwf) {
@@ -596,7 +605,7 @@
      */
     onPress = function(myEvent) {
       try {
-        if (isPreventDefaultEnabled) {
+        if (loader.isPreventDefaultEnabled) {
           myEvent.preventDefault();
         }
         if (!lwf) {
@@ -641,7 +650,7 @@
      */
     onRelease = function(myEvent) {
       try {
-        if (isPreventDefaultEnabled) {
+        if (loader.isPreventDefaultEnabled) {
           myEvent.preventDefault();
         }
         if (!lwf) {
