@@ -110,7 +110,7 @@
     this.loadingCounter = 0;
     this.debug = false;
     this.backgroundColor = null;
-    this.resizeMode = 'fitForWidth';
+    this.resizeMode = null;
     this.resizeStretch = null;
     this.displayDivId = null;
     this.widthLimit = 0;
@@ -444,45 +444,65 @@
           devicePixelRatio = 1;
         }
 
-        var width = loader.stageWidth ? loader.stageWidth : lwf.width;
-        var height = loader.stageHeight ? loader.stageHeight : lwf.height;
+        var imageWidth = lwf.width;
+        var imageHeight = lwf.height;
 
-        var innerWidth = global.innerWidth;
-        var innerHeight = global.innerHeight;
+        var screenWidth = global.innerWidth;
+        var screenHeight = global.innerHeight;
+
+        var screenRatio = 1.0;
+        var imageRatio = 1.0;
 
         if (isAndroid) {
           /** fix innerWidth/Height for old Android devices */
           if (global.innerWidth > global.screen.width) {
-            innerWidth = global.screen.width;
+            screenWidth = global.screen.width;
           }
           if (global.innerHeight > global.screen.height) {
-            innerHeight = global.screen.height;
+            screenHeight = global.screen.height;
           }
         }
 
-        if (width > innerWidth || myLoaderData.resizeStretch) {
-          width = innerWidth;
+        // set it to user's custom value if defined
+        screenWidth = loader.stageWidth ? loader.stageWidth : screenWidth;
+        screenHeight = loader.stageHeight ? loader.stageHeight : screenHeight;
+
+        if (imageWidth > screenWidth) {
+          imageWidth = screenWidth;
         }
-        if (height > innerHeight || myLoaderData.resizeStretch) {
-          height = innerHeight;
+        if (imageHeight > screenHeight) {
+          imageHeight = screenHeight;
         }
 
-        if (widthInit !== width || heightInit !== height) {
-          widthInit = width;
-          heightInit = height;
+        if (widthInit !== imageWidth || heightInit !== imageHeight) {
+          widthInit = imageWidth;
+          heightInit = imageHeight;
 
           if (setting.fitForWidth) {
             if (setting.widthLimit) {
-              width = (width > setting.widthLimit) ? setting.widthLimit : width;
+              imageWidth = (imageWidth > setting.widthLimit) ? setting.widthLimit : imageWidth;
             }
-            stageWidth = Math.round(width);
-            stageHeight = Math.round(width * lwf.height / lwf.width);
-          } else {
+            stageWidth = Math.round(screenWidth);
+            stageHeight = Math.round(screenWidth * lwf.height / lwf.width);
+          } else if (setting.fitForHeight) {
             if (setting.heightLimit) {
-              height = (height > setting.heightLimit) ? setting.heightLimit : height;
+              imageHeight = (imageHeight > setting.heightLimit) ? setting.heightLimit : imageHeight;
             }
-            stageWidth = Math.round(height * lwf.width / lwf.height);
-            stageHeight = Math.round(height);
+            stageWidth = Math.round(screenHeight * lwf.width / lwf.height);
+            stageHeight = Math.round(screenHeight);
+          }
+
+          if (myLoaderData.resizeStretch) {
+            screenRatio = screenWidth / screenHeight;
+            imageRatio = imageWidth / imageHeight;
+
+            if (screenRatio > imageRatio) {
+              stageWidth = imageWidth * (screenHeight / imageHeight);
+              stageHeight = screenHeight;
+            } else {
+              stageWidth = screenWidth;
+              stageHeight = imageHeight * (screenWidth / imageWidth);
+            }
           }
 
           /** offset setting inside the stage */
@@ -492,18 +512,21 @@
           if (loader.stageHAlign == -1) {
             offsetX = 0;
           } else if (loader.stageHAlign == 1) {
-            offsetX = Math.round(width - stageWidth);
+            offsetX = Math.round(screenWidth - stageWidth);
           } else {
-            offsetX = Math.round((width - stageWidth) / 2);
+            offsetX = Math.round((screenWidth - stageWidth) / 2);
           }
 
           if (loader.stageVAlign == -1) {
             offsetY = 0;
           } else if (loader.stageVAlign == 1) {
-            offsetY = Math.round(height - stageHeight);
+            offsetY = Math.round(screenHeight - stageHeight);
           } else {
-            offsetY = Math.round((height - stageHeight) / 2);
+            offsetY = Math.round((screenHeight - stageHeight) / 2);
           }
+
+          stage.width = loader.stageWidth ? loader.stageWidth : stage.width;
+          stage.height = loader.stageHeight ? loader.stageHeight : stage.height;
 
           stageEventReceiver.style.left = stage.style.left = offsetX + 'px';
           stageEventReceiver.style.top = stage.style.top = offsetY + 'px';
@@ -512,14 +535,27 @@
 
           stageEventReceiver.width = stage.width = Math.floor(stageWidth * devicePixelRatio);
           stageEventReceiver.height = stage.height = Math.floor(stageHeight * devicePixelRatio);
-          if (setting.fitForWidth) {
-            stageScale = stageWidth / stage.width;
-            lwf.property.clear();
-            lwf.fitForWidth(stage.width, stage.height);
+
+          if (myLoaderData.resizeStretch) {
+            if (screenRatio < imageRatio) {
+              stageScale = stageWidth / stage.width;
+              lwf.property.clear();
+              lwf.fitForWidth(stage.width, stage.height);
+            } else {
+              stageScale = stageHeight / stage.height;
+              lwf.property.clear();
+              lwf.fitForHeight(stage.width, stage.height);
+            }
           } else {
-            stageScale = stageHeight / stage.height;
-            lwf.property.clear();
-            lwf.fitForHeight(stage.width, stage.height);
+            if (setting.fitForWidth) {
+              stageScale = stageWidth / stage.width;
+              lwf.property.clear();
+              lwf.fitForWidth(stage.width, stage.height);
+            } else {
+              stageScale = stageHeight / stage.height;
+              lwf.property.clear();
+              lwf.fitForHeight(stage.width, stage.height);
+            }
           }
 
           /** set the external div size */
@@ -1020,6 +1056,9 @@
     stage.style.left = pos.left + 'px';
     stage.style.zIndex = targetElem.style.zIndex + 1;
     targetElem.appendChild(stage);
+
+    stage.width = this.stageWidth;
+    stage.height = this.stageHeight;
 
     /** use event receiver for avoiding Galaxy S3's translateZ bug */
     var stageEventReceiver = null;
