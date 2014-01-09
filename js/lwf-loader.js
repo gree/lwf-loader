@@ -211,7 +211,7 @@
    * set isPreventDefaultEnabled flag
    * @param {boolean} preventDefaultBehaviour
    */
-  LwfLoader.prototype.setPreventDefaultBehaviour_ = function(preventDefaultBehaviour) {
+  LwfLoader.prototype.setPreventDefaultBehaviour = function(preventDefaultBehaviour) {
     this.isPreventDefaultEnabled = preventDefaultBehaviour;
   };
 
@@ -478,30 +478,27 @@
           widthInit = imageWidth;
           heightInit = imageHeight;
 
+          stageWidth = imageWidth;
+          stageHeight = imageHeight;
+
           if (setting.fitForWidth) {
-            if (setting.widthLimit) {
-              imageWidth = (imageWidth > setting.widthLimit) ? setting.widthLimit : imageWidth;
-            }
             stageWidth = Math.round(screenWidth);
             stageHeight = Math.round(screenWidth * lwf.height / lwf.width);
           } else if (setting.fitForHeight) {
-            if (setting.heightLimit) {
-              imageHeight = (imageHeight > setting.heightLimit) ? setting.heightLimit : imageHeight;
-            }
             stageWidth = Math.round(screenHeight * lwf.width / lwf.height);
             stageHeight = Math.round(screenHeight);
-          }
+          } else {
+            if (myLoaderData.resizeStretch) {
+              screenRatio = screenWidth / screenHeight;
+              imageRatio = imageWidth / imageHeight;
 
-          if (myLoaderData.resizeStretch) {
-            screenRatio = screenWidth / screenHeight;
-            imageRatio = imageWidth / imageHeight;
-
-            if (screenRatio > imageRatio) {
-              stageWidth = imageWidth * (screenHeight / imageHeight);
-              stageHeight = screenHeight;
-            } else {
-              stageWidth = screenWidth;
-              stageHeight = imageHeight * (screenWidth / imageWidth);
+              if (screenRatio > imageRatio) {
+                stageWidth = imageWidth * (screenHeight / imageHeight);
+                stageHeight = screenHeight;
+              } else {
+                stageWidth = screenWidth;
+                stageHeight = imageHeight * (screenWidth / imageWidth);
+              }
             }
           }
 
