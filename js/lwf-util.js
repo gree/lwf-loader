@@ -16,7 +16,8 @@ window.Utility.autoSelectRenderer = function() {
   }
 
   /** Android 2.1 does not work with Canvas, force to use CSS renderer */
-  if (/Android 2\.1/.test(userAgent)) {
+  /** Android 2.3.5 or higher 2.3 versions does not work properly on canvas */
+  if (/Android 2\.1/.test(userAgent) || /Android 2\.3\.[5-7]/.test(userAgent)) {
     return 'useWebkitCSSRenderer';
   }
 

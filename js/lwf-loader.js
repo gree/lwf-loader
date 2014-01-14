@@ -89,12 +89,12 @@
    * @property {int} currentFPS current running FPS
    * @property {object} backgroundColor if undefined, the default backgroundColor will be used
    * @property {string} resizeMode fitForWidth or fitForHeight
-   * @property {boolean} resizeStretch whether stretch resource to fit the window
+   * @property {boolean} fitToScreen whether stretch resource to fit the window
    * @property {string} displayDivId id of element playing LWF resource
-   * @property {int} widthLimit limit value for the width of resource
-   * @property {int} heightLimit limit value for the height of resource
    * @property {int} stageWidth custom stage width value, 0 if undefined
    * @property {int} stageHeight custom stage height value, 0 if undefined
+   * @property {int} screenWidth custom display screen width value, 0 if undefined
+   * @property {int} screenHeight custom display screen value, 0 if undefined
    * @property {int} stageHAlign flag tells how the display area will be aligned horizontally
    * @property {int} stageVAlign flag tells how the display area will be aligned vertically
    * @property {boolean} useLargeImage whether using high-resolution images
@@ -111,12 +111,12 @@
     this.debug = false;
     this.backgroundColor = null;
     this.resizeMode = null;
-    this.resizeStretch = null;
+    this.fitToScreen = null;
     this.displayDivId = null;
-    this.widthLimit = 0;
-    this.heightLimit = 0;
     this.stageWidth = 0;
     this.stageHeight = 0;
+    this.screenWidth = 0;
+    this.screenHeight = 0;
     this.stageHAlign = -1; // -1: left, 0: center, 1: right
     this.stageVAlign = -1; // -1: top, 0: center, 1: bottom
     this.useLargeImage = false;
@@ -324,12 +324,12 @@
       this.setRenderer(lwfDisplaySetting.renderer);
     }
     this.resizeMode = lwfDisplaySetting.resizeMode || this.resizeMode;
-    this.resizeStretch = lwfDisplaySetting.resizeStretch || this.resizeStretch;
+    this.fitToScreen = lwfDisplaySetting.fitToScreen || this.fitToScreen;
     this.displayDivId = lwfDisplaySetting.displayDivId || this.displayDivId;
-    this.widthLimit = lwfDisplaySetting.widthLimit || this.widthLimit;
-    this.heightLimit = lwfDisplaySetting.heightLimit || this.heightLimit;
     this.stageWidth = lwfDisplaySetting.stageWidth || this.stageWidth;
     this.stageHeight = lwfDisplaySetting.stageHeight || this.stageHeight;
+    this.screenWidth = lwfDisplaySetting.screenWidth || this.screenWidth;
+    this.screenHeight = lwfDisplaySetting.screenHeight || this.screenHeight;
     this.stageHAlign =
       (lwfDisplaySetting.stageHAlign != null) ? lwfDisplaySetting.stageHAlign : this.stageHAlign;
     this.stageVAlign =
@@ -430,6 +430,15 @@
 
     lwf.rootMovie.moveTo(loader.rootOffset.x, loader.rootOffset.y);
 
+    lwf.width = loader.stageWidth ? loader.stageWidth : lwf.width;
+    lwf.height = loader.stageHeight ? loader.stageHeight : lwf.height;
+
+    var devicePixelRatio = global.devicePixelRatio;
+    if (loader.getRenderer() === 'useWebkitCSSRenderer') {
+      devicePixelRatio = 1;
+    }
+
+
     /**
      * loading handler, set the required information for LWF files
      */
@@ -439,19 +448,14 @@
           return;
         }
 
-        var devicePixelRatio = global.devicePixelRatio;
-        if (loader.getRenderer() === 'useWebkitCSSRenderer') {
-          devicePixelRatio = 1;
-        }
-
         var imageWidth = lwf.width;
         var imageHeight = lwf.height;
 
-        var screenWidth = global.innerWidth;
-        var screenHeight = global.innerHeight;
+        var screenWidth = loader.screenWidth ? loader.screenWidth : global.innerWidth;
+        var screenHeight = loader.screenHeight ? loader.screenHeight : global.innerHeight;
 
-        var screenRatio = 1.0;
-        var imageRatio = 1.0;
+        var screenRatio = screenWidth / screenHeight;
+        var imageRatio = imageWidth / imageHeight;
 
         if (isAndroid) {
           /** fix innerWidth/Height for old Android devices */
@@ -463,35 +467,27 @@
           }
         }
 
-        // set it to user's custom value if defined
-        screenWidth = loader.stageWidth ? loader.stageWidth : screenWidth;
-        screenHeight = loader.stageHeight ? loader.stageHeight : screenHeight;
-
         if (imageWidth > screenWidth) {
+          imageHeight *= screenWidth / imageWidth;
           imageWidth = screenWidth;
         }
         if (imageHeight > screenHeight) {
+          imageWidth = screenHeight / imageHeight;
           imageHeight = screenHeight;
         }
 
-        if (widthInit !== imageWidth || heightInit !== imageHeight) {
-          widthInit = imageWidth;
-          heightInit = imageHeight;
-
+        if (widthInit !== screenWidth || heightInit !== screenHeight) {
           stageWidth = imageWidth;
           stageHeight = imageHeight;
 
           if (setting.fitForWidth) {
             stageWidth = Math.round(screenWidth);
-            stageHeight = Math.round(screenWidth * lwf.height / lwf.width);
+            stageHeight = Math.round(screenWidth * imageHeight / imageWidth);
           } else if (setting.fitForHeight) {
-            stageWidth = Math.round(screenHeight * lwf.width / lwf.height);
+            stageWidth = Math.round(screenHeight * imageWidth / imageHeight);
             stageHeight = Math.round(screenHeight);
           } else {
-            if (myLoaderData.resizeStretch) {
-              screenRatio = screenWidth / screenHeight;
-              imageRatio = imageWidth / imageHeight;
-
+            if (myLoaderData.fitToScreen) {
               if (screenRatio > imageRatio) {
                 stageWidth = imageWidth * (screenHeight / imageHeight);
                 stageHeight = screenHeight;
@@ -522,6 +518,7 @@
             offsetY = Math.round((screenHeight - stageHeight) / 2);
           }
 
+          /** setup lwf stage */
           stage.width = loader.stageWidth ? loader.stageWidth : stage.width;
           stage.height = loader.stageHeight ? loader.stageHeight : stage.height;
 
@@ -533,7 +530,7 @@
           stageEventReceiver.width = stage.width = Math.floor(stageWidth * devicePixelRatio);
           stageEventReceiver.height = stage.height = Math.floor(stageHeight * devicePixelRatio);
 
-          if (myLoaderData.resizeStretch) {
+          if (myLoaderData.fitToScreen) {
             if (screenRatio < imageRatio) {
               stageScale = stageWidth / stage.width;
               lwf.property.clear();
@@ -548,12 +545,14 @@
               stageScale = stageWidth / stage.width;
               lwf.property.clear();
               lwf.fitForWidth(stage.width, stage.height);
-            } else {
+            } else if (setting.fitForHeight) {
               stageScale = stageHeight / stage.height;
               lwf.property.clear();
-              lwf.fitForHeight(stage.width, stage.height);
+              lwf.fitForHeight(stage.width, stage.width);
             }
           }
+
+          lwf.property.moveTo(0, 0);
 
           /** set the external div size */
           if (loader.displayDivId) {
@@ -561,6 +560,9 @@
             windowDiv.style.width = stageWidth + 'px';
             windowDiv.style.height = stageHeight + 'px';
           }
+
+          widthInit = screenWidth;
+          heightInit = screenHeight;
         }
 
         var t1 = global.performance.now();
@@ -820,7 +822,7 @@
     }
 
     var lwfRenderer = this.getRenderer();
-
+    
     /** call the corresponding rendering function in LWF library */
     if (lwfRenderer) {
       LWF[lwfRenderer]();
@@ -858,7 +860,7 @@
       myLwfParam.fitForHeight = true;
     }
 
-    myLwfParam.resizeStretch = this.resizeStretch;
+    myLwfParam.fitToScreen = this.fitToScreen;
     myLwfParam.widthLimit = this.widthLimit;
     myLwfParam.heightLimit = this.heightLimit;
 
@@ -1018,8 +1020,8 @@
     myLoaderData.lwfMap = myLwfParam.lwfMap;
     delete myLwfParam.lwfMap;
 
-    myLoaderData.resizeStretch = myLwfParam.resizeStretch;
-    delete myLwfParam.resizeStretch;
+    myLoaderData.fitToScreen = myLwfParam.fitToScreen;
+    delete myLwfParam.fitToScreen;
 
     if (this.isLwfsEnvironment_()) {
       var lwfPath;
