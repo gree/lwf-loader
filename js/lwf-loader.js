@@ -472,11 +472,12 @@
           imageWidth = screenWidth;
         }
         if (imageHeight > screenHeight) {
-          imageWidth = screenHeight / imageHeight;
+          imageWidth *= screenHeight / imageHeight;
           imageHeight = screenHeight;
         }
 
         if (widthInit !== screenWidth || heightInit !== screenHeight) {
+
           stageWidth = imageWidth;
           stageHeight = imageHeight;
 
@@ -489,8 +490,10 @@
           } else {
             if (myLoaderData.fitToScreen) {
               if (screenRatio > imageRatio) {
+
                 stageWidth = imageWidth * (screenHeight / imageHeight);
                 stageHeight = screenHeight;
+
               } else {
                 stageWidth = screenWidth;
                 stageHeight = imageHeight * (screenWidth / imageWidth);
@@ -545,10 +548,10 @@
               stageScale = stageWidth / stage.width;
               lwf.property.clear();
               lwf.fitForWidth(stage.width, stage.height);
-            } else if (setting.fitForHeight) {
+            } else {
               stageScale = stageHeight / stage.height;
               lwf.property.clear();
-              lwf.fitForHeight(stage.width, stage.width);
+              lwf.fitForHeight(stage.width, stage.height);
             }
           }
 
@@ -557,8 +560,15 @@
           /** set the external div size */
           if (loader.displayDivId) {
             var windowDiv = document.getElementById(loader.displayDivId);
-            windowDiv.style.width = stageWidth + 'px';
-            windowDiv.style.height = stageHeight + 'px';
+
+            if (myLoaderData.fitToScreen) {
+              windowDiv.style.width = screenWidth + 'px';
+              windowDiv.style.height = screenHeight + 'px';
+            } else {
+              windowDiv.style.width = stageWidth + 'px';
+              windowDiv.style.height = stageHeight + 'px';
+            }
+
           }
 
           widthInit = screenWidth;
@@ -616,8 +626,6 @@
         }
 
         if (isSp) {
-          touchX -= stage.offsetLeft;
-          touchY -= stage.offsetTop;
           touchX = touchX - stageRect.left - window.scrollX;
           touchY = touchY - stageRect.top - window.scrollY;
         } else {
@@ -660,8 +668,6 @@
         }
 
         if (isSp) {
-          touchX -= stage.offsetLeft;
-          touchY -= stage.offsetTop;
           touchX = touchX - stageRect.left - window.scrollX;
           touchY = touchY - stageRect.top - window.scrollY;
         } else {
@@ -820,9 +826,8 @@
     if (!this.getRenderer()) {
       this.setRenderer(global.Utility.autoSelectRenderer());
     }
-
     var lwfRenderer = this.getRenderer();
-    
+
     /** call the corresponding rendering function in LWF library */
     if (lwfRenderer) {
       LWF[lwfRenderer]();
@@ -1055,9 +1060,6 @@
     stage.style.left = pos.left + 'px';
     stage.style.zIndex = targetElem.style.zIndex + 1;
     targetElem.appendChild(stage);
-
-    stage.width = this.stageWidth;
-    stage.height = this.stageHeight;
 
     /** use event receiver for avoiding Galaxy S3's translateZ bug */
     var stageEventReceiver = null;
