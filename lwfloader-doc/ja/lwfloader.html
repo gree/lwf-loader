@@ -201,13 +201,13 @@
 <b>loadingCount : 0</b>,                        LWFとリソースの読み込み進捗をスタックします。<br>
 <b>debug : false</b>,                           このフラグを立てるとデバッグ情報を画面に出したりログを出します。<br>
 <b>backgroundColor : null</b>,                  描画領域の背景色をARGBで指定します。<br>
-<b>resizeMode : 'fitForWidth'</b>,              fitForWidthかfitForHeightで画面の縦横どちらに合わせるかを指定します。<br>
-<b>resizeStretch : false</b>,                   ウインドウのリサイズ時にLWFが伸び縮みするかどうかを占めるフラグです。<br>
+<b>resizeMode : 'fitForWidth'</b>,              fitForWidthかfitForHeightかfitToScreenで画面の伸縮方法を指定します。<br>
+<b>fitToScreen : false</b>,                   　resizeModeでfitToScreenを設定すると画面サイズに合わせて自動に伸縮します。<br>
 <b>displayDivId : null</b>,                     LWFのリソースが含まれているDOMエレメントをIDで指定します。<br>
-<b>widthLimit : 0</b>,                          LWFの描画エレメントの横幅の最大値を指定します。<br>
-<b>heightLimit : 0</b>,                         LWFの描画エレメントの高さの最大値を指定します。<br>
 <b>stageWidth : 0</b>,                          ステージの横幅<br>
 <b>stageHeight : 0</b>,                         ステージの縦幅<br>
+<b>screenWidth : 0</b>,                         表示領域の横幅<br>
+<b>screenHeight : 0</b>,                        表示領域の縦幅<br>
 <b>stageHAlign : -1</b>,                        -1: 左寄せ, 0: 中央寄せ, 1: 右寄せ<br>
 <b>stageVAlign : -1</b>,                        -1: 上寄せ, 0: 中央寄せ, 1: 下寄せ<br>
 <b>useLargeImage : false</b>,                   このフラグを立てると画像のファイル名の最後に'_@2x'をつけます。<br>
