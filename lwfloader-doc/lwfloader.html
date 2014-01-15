@@ -396,10 +396,13 @@
       <blockquote class="content-code">
         var displaySetting = {<br>
         &nbsp;&nbsp;resizeMode: "fitForWidth",<br>
-        &nbsp;&nbsp;resizeStretch: true,<br>
         &nbsp;&nbsp;displayDivId: 'stg',<br>
-        &nbsp;&nbsp;widthLimit: 640,<br>
-        &nbsp;&nbsp;heightLimit: 480,<br>
+        &nbsp;&nbsp;stageWidth: 640,<br>
+        &nbsp;&nbsp;stageHeight: 480,<br>
+        &nbsp;&nbsp;screenWidth: 800,<br>
+        &nbsp;&nbsp;screenHeight: 600,<br>
+        &nbsp;&nbsp;stageHAlign: 0,<br>
+        &nbsp;&nbsp;stageVAlign: 0,<br>
         &nbsp;&nbsp;useLargeImage: false<br>
         };<br>
         <br>
@@ -410,13 +413,12 @@
       <pre>
         <code>
 <b>renderer : 'canvas'</b>,          rendering mode(canvas, css, webgl)<br>
-<b>resizeMode : 'fitForWidth'</b>,   behaviour on window resize, 'fitForWidth' or 'fitForHeight'<br>
-<b>resizeStretch : false</b>,        boolean tells whether stretches LWF to fit window size<br>
+<b>resizeMode : 'fitForWidth'</b>,   behaviour on window resize, 'fitForWidth', 'fitForHeight' or 'fitToScreen'<br>
 <b>displayDivId : 'lwf-stage'</b>,   ID of DOM element which contains LWF resource, used for stretch purpose<br>
-<b>widthLimit : 640</b>,             width limit applied to LWF element<br>
-<b>widthHeight : 480</b>,            height limit applied to LWF element<br>
-<b>stageWidth : 0</b>,               stage width, set 0 to use default value<br>
-<b>stageHeight : 0</b>,              stage height, set 0 to use default value<br>
+<b>stageWidth : 0</b>,               display stage width, set 0 to use default value<br>
+<b>stageHeight : 0</b>,              display stage height, set 0 to use default value<br>
+<b>screenWidth: 0 </b>,              screen width, set 0 to use window's innerWidth<br>
+<b>screenHeight: 0</b>,              screen height, set 0 to use window's innerHeight<br>
 <b>stageHAlign : -1</b>,             -1: align-left, 0: align-center, 1: align-right<br>
 <b>stageVAlign : -1</b>,             -1: align-top, 0: align-center, 1: align-bottom<br>
 <b>useLargeImage : false</b>,        boolean tells whether use images with suffix '_@2x'

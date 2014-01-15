@@ -393,10 +393,13 @@
       <blockquote class="content-code">
         var displaySetting = {<br>
         &nbsp;&nbsp;resizeMode: "fitForWidth",<br>
-        &nbsp;&nbsp;resizeStretch: true,<br>
         &nbsp;&nbsp;displayDivId: 'stg',<br>
-        &nbsp;&nbsp;widthLimit: 640,<br>
-        &nbsp;&nbsp;heightLimit: 480,<br>
+        &nbsp;&nbsp;stageWidth: 640,<br>
+        &nbsp;&nbsp;stageHeight: 480,<br>
+        &nbsp;&nbsp;screenWidth: 800,<br>
+        &nbsp;&nbsp;screenHeight: 600,<br>
+        &nbsp;&nbsp;stageHAlign: 0,<br>
+        &nbsp;&nbsp;stageVAlign: 0,<br>
         &nbsp;&nbsp;useLargeImage: false<br>
         };<br>
         <br>
@@ -407,13 +410,12 @@
       <pre>
         <code>
 <b>renderer : 'canvas'</b>,          レンダラーを指定できます。(canvas, css, webgl)<br>
-<b>resizeMode : 'fitForWidth'</b>,   ウィンドウリサイズ時の動作を指定できます。(fitForWidth, fitForHeight)<br>
-<b>resizeStretch : false</b>,        ウインドウに合わせてLWFが伸び縮みするかを示すフラグです。<br>
+<b>resizeMode : 'fitForWidth'</b>,   ウィンドウリサイズ時の動作を指定できます。(fitForWidth, fitForHeight, fitToScreen)<br>
 <b>displayDivId : 'lwf-stage'</b>,   LWFのリソースがあるDOMエレメントのIDです。LWFを伸び縮みする為の物です。<br>
-<b>widthLimit : 640</b>,             LWFエレメントの全幅です。<br>
-<b>widthHeight : 480</b>,            LWFエレメントの全高です。<br>
-<b>stageWidth : 0</b>,               ステージの横幅<br>
-<b>stageHeight : 0</b>,              ステージの縦幅<br>
+<b>stageWidth : 0</b>,               再生ステージの横幅<br>
+<b>stageHeight : 0</b>,              再生ステージの縦幅<br>
+<b>screenWidth : 0</b>,              表示領域の横幅、デフォルトでスクリーンサイズを使用<br>
+<b>screenHeight : 0</b>,             表示領域の縦幅、デフォルトでスクリーンサイズを使用<br>
 <b>stageHAlign : -1</b>,             -1: 左寄せ, 0: 中央寄せ, 1: 右寄せ<br>
 <b>stageVAlign : -1</b>,             -1: 上寄せ, 0: 中央寄せ, 1: 下寄せ<br>
 <b>useLargeImage : false</b>,        このフラグを立てると画像のファイル名の最後に'_@2x'をつけます。
