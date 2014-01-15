@@ -111,7 +111,7 @@
     this.debug = false;
     this.backgroundColor = null;
     this.resizeMode = null;
-    this.fitToScreen = null;
+    this.fitToScreen = false;
     this.displayDivId = null;
     this.stageWidth = 0;
     this.stageHeight = 0;
@@ -324,7 +324,6 @@
       this.setRenderer(lwfDisplaySetting.renderer);
     }
     this.resizeMode = lwfDisplaySetting.resizeMode || this.resizeMode;
-    this.fitToScreen = lwfDisplaySetting.fitToScreen || this.fitToScreen;
     this.displayDivId = lwfDisplaySetting.displayDivId || this.displayDivId;
     this.stageWidth = lwfDisplaySetting.stageWidth || this.stageWidth;
     this.stageHeight = lwfDisplaySetting.stageHeight || this.stageHeight;
@@ -863,6 +862,8 @@
       myLwfParam.fitForWidth = true;
     } else if (this.resizeMode === 'fitForHeight') {
       myLwfParam.fitForHeight = true;
+    } else if (this.resizeMode === 'fitToScreen') {
+      this.fitToScreen = true;
     }
 
     myLwfParam.fitToScreen = this.fitToScreen;
