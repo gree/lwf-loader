@@ -428,8 +428,10 @@
     var fps_num60 = 0;
 
     lwf.rootMovie.moveTo(loader.rootOffset.x, loader.rootOffset.y);
-    lwf.width = loader.stageWidth ? loader.stageWidth : lwf.width;
-    lwf.height = loader.stageHeight ? loader.stageHeight : lwf.height;
+    if (!global.lwfs_loader_mode) {
+      lwf.width = loader.stageWidth ? loader.stageWidth : lwf.width;
+      lwf.height = loader.stageHeight ? loader.stageHeight : lwf.height;
+    }
 
     global.lwfWidth = lwf.width;
     global.lwfHeight = lwf.height;
