@@ -469,15 +469,6 @@
           }
         }
 
-        if (imageWidth > screenWidth) {
-          imageHeight *= screenWidth / imageWidth;
-          imageWidth = screenWidth;
-        }
-        if (imageHeight > screenHeight) {
-          imageWidth *= screenHeight / imageHeight;
-          imageHeight = screenHeight;
-        }
-
         if (widthInit !== screenWidth || heightInit !== screenHeight) {
           stageWidth = imageWidth;
           stageHeight = imageHeight;
