@@ -428,15 +428,16 @@
     var fps_num60 = 0;
 
     lwf.rootMovie.moveTo(loader.rootOffset.x, loader.rootOffset.y);
-
     lwf.width = loader.stageWidth ? loader.stageWidth : lwf.width;
     lwf.height = loader.stageHeight ? loader.stageHeight : lwf.height;
+
+    global.lwfWidth = lwf.width;
+    global.lwfHeight = lwf.height;
 
     var devicePixelRatio = global.devicePixelRatio;
     if (loader.getRenderer() === 'useWebkitCSSRenderer') {
       devicePixelRatio = 1;
     }
-
 
     /**
      * loading handler, set the required information for LWF files
@@ -447,8 +448,8 @@
           return;
         }
 
-        var imageWidth = lwf.width;
-        var imageHeight = lwf.height;
+        var imageWidth = loader.stageWidth ? loader.stageWidth : lwf.width;
+        var imageHeight = loader.stageHeight ? loader.stageHeight : lwf.height;
 
         var screenWidth = loader.screenWidth ? loader.screenWidth : global.innerWidth;
         var screenHeight = loader.screenHeight ? loader.screenHeight : global.innerHeight;
@@ -476,7 +477,6 @@
         }
 
         if (widthInit !== screenWidth || heightInit !== screenHeight) {
-
           stageWidth = imageWidth;
           stageHeight = imageHeight;
 
@@ -867,8 +867,6 @@
     }
 
     myLwfParam.fitToScreen = this.fitToScreen;
-    myLwfParam.widthLimit = this.widthLimit;
-    myLwfParam.heightLimit = this.heightLimit;
 
     /** web worker setting, only available on Chrome or non-Android devices*/
     myLwfParam.worker = useWebWorker;
