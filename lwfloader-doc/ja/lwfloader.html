@@ -26,35 +26,6 @@
       <a class="highlight-text" href="https://github.com/gree/lwf-loader/" style="font-size: 90%; margin-left: 0; margin-bottom: 10px; margin-top: -10px;">Github Link</a>
       <ul>
         <li class="pure-menu-selected menu-item-divided">
-          <a href="#_global_">_global_</a>
-        </li>
-
-        <li class="pure-menu menu-item-text">
-          <a href="#isAndroid">isAndroid</a>
-        </li>
-        <li class="pure-menu menu-item-text">
-          <a href="#isChrome">isChrome</a>
-        </li>
-        <li class="pure-menu menu-item-text">
-          <a href="#isiOS">isiOS</a>
-        </li>
-        <li class="pure-menu menu-item-text">
-          <a href="#isPreventDefaultEnabled">isPreventDefaultEnabled</a>
-        </li>
-        <li class="pure-menu menu-item-text">
-          <a href="#isSP">isSP</a>
-        </li>
-        <li class="pure-menu menu-item-text">
-          <a href="#isTouchEventEnabled">isTouchEventEnabled</a>
-        </li>
-        <li class="pure-menu menu-item-text">
-          <a href="#userAgent">userAgent</a>
-        </li>
-        <li class="pure-menu menu-item-text">
-          <a href="#useWebWorker">useWebWorker</a>
-        </li>
-
-        <li class="pure-menu-selected menu-item-divided" style="margin-top: 5%;">
           <a href="#LwfLoader">LwfLoader</a>
         </li>
         <li class="pure-menu menu-item-text">
@@ -93,6 +64,9 @@
         <li class="pure-menu menu-item-text">
           <a href="#setRenderer">setRenderer</a>
         </li>
+        <li class="pure-menu menu-item-text">
+          <a href="#setPreventDefaultBehaviour">setPreventDefaultBehaviour</a>
+        </li>
       </ul>
       <br><br>
     </div>
@@ -105,81 +79,6 @@
     </div>
 
     <div class="content">
-      <h2 id="_global_" class="content-subhead">_global_ Objects<a href="#_global_" class="content-link"></a></h2>
-      <h3 id="isAndroid" style="margin-top: 5%;">isAndroid</h3>
-      <p>
-        Android端末上で動作していることを示すフラグです。
-      </p>
-      <blockquote class="content-code">
-        if (isAndroid)<br>
-        => trueの場合はAndroid端末上で動作しています。
-      </blockquote>
-      <br>
-      <h3 id="isChrome">isChrome</h3>
-      <p>
-        Google Chrome上で動作していることを示すフラグです。
-      </p>
-      <blockquote class="content-code">
-        if (isChrome)<br>
-        => trueの場合はGoogle Chrome上で動作しています。
-      </blockquote>
-      <br>
-      <h3 id="isiOS">isiOS</h3>
-      <p>
-          iOS上で動作していることを示すフラグです。
-      </p>
-      <blockquote class="content-code">
-        if (isiOS)<br>
-        => trueの場合はiOS端末上で動作しています。
-      </blockquote>
-      <br>
-      <h3 id="isPreventDefaultEnabled">isPreventDefaultEnabled</h3>
-      <p>
-        このフラグはブラウザイベントのpreventDefaultを実行するかを示します。
-      </p>
-      <blockquote class="content-code">
-        isPreventDefaultEnabled = true;<br>
-        => このフラグを立てるとタッチイベント(press, move)の動作を変更できます。
-      </blockquote>
-      <br>
-      <h3 id="isSP">isSP</h3>
-      <p>
-        スマートフォン上で動作していることを示すフラグです。
-      </p>
-      <blockquote class="content-code">
-        if (isSP)<br>
-        => trueの場合はiOS端末かAndroid端末上で動作しています。
-      </blockquote>
-      <br>
-      <h3 id="isTouchEventEnabled">isTouchEventEnabled</h3>
-      <p>
-        タッチイベントが有効かを示すフラグです。
-      </p>
-      <blockquote class="content-code">
-        var isTouchEventEnabled = isSP;<br>
-        => デフォルトではisSPがtrueの場合にこのフラグもtrueです。
-      </blockquote>
-      <br>
-      <h3  id="userAgent">userAgent</h3>
-      <p>
-          navigator.userAgentオブジェクトのコピーです。
-      </p>
-      <blockquote class="content-code">
-        var userAgent = navigator.userAgent;
-      </blockquote>
-      <br>
-      <h3 id="useWebWorker">useWebWorker</h3>
-      <p>
-        Web Workersが有効かを示すフラグです。
-      </p>
-      <blockquote class="content-code">
-        var useWebWorker = !isAndroid || isChrome;<br>
-        => Android標準ブラウザではfalseですが、Android Chromeの場合はtrueになります。その他の環境ではfalseです。
-      </blockquote>
-      <br>
-
-      <hr>
-
       <h2 id="LwfLoader" class="content-subhead">Lwf Loader<a href="#LwfLoader" class="content-link"></a></h2>
 
       <h3 id="constructor" style="margin-top: 5%;">LwfLoader Constructor
@@ -447,6 +346,20 @@
         </code>
       </pre>
       <br>
+    
+      <h3 id="setPreventDefaultBehaviour" style="margin-top: 5%;">setPreventDefaultBehaviour
+        <code class="simple" style="margin-left: 5%;">setPreventDefaultBehaviour(boolean)</code></h3>
+      <p>
+        preventDefaultの挙動を手動で設定できます。<br>
+      </p>
+
+      <blockquote class="content-code">
+        lwfLoader.setPreventDefaultBehaviour(false);<br>
+        //様々なイベントに対してpreventDefaultを無効にします。<br>
+      </blockquote>
+      <br>
+
+    <!-- Document ends here -->
     </div>
   </div>
 </div>

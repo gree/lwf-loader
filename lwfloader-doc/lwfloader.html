@@ -26,35 +26,6 @@
       <a class="highlight-text" href="https://github.com/gree/lwf-loader/" style="font-size: 90%; margin-left: 0; margin-bottom: 10px; margin-top: -10px;">Github Link</a>
       <ul>
         <li class="pure-menu-selected menu-item-divided">
-          <a href="#_global_">_global_</a>
-        </li>
-
-        <li class="pure-menu menu-item-text">
-          <a href="#isAndroid">isAndroid</a>
-        </li>
-        <li class="pure-menu menu-item-text">
-          <a href="#isChrome">isChrome</a>
-        </li>
-        <li class="pure-menu menu-item-text">
-          <a href="#isiOS">isiOS</a>
-        </li>
-        <li class="pure-menu menu-item-text">
-          <a href="#isPreventDefaultEnabled">isPreventDefaultEnabled</a>
-        </li>
-        <li class="pure-menu menu-item-text">
-          <a href="#isSP">isSP</a>
-        </li>
-        <li class="pure-menu menu-item-text">
-          <a href="#isTouchEventEnabled">isTouchEventEnabled</a>
-        </li>
-        <li class="pure-menu menu-item-text">
-          <a href="#userAgent">userAgent</a>
-        </li>
-        <li class="pure-menu menu-item-text">
-          <a href="#useWebWorker">useWebWorker</a>
-        </li>
-
-        <li class="pure-menu-selected menu-item-divided" style="margin-top: 5%;">
           <a href="#LwfLoader">LwfLoader</a>
         </li>
         <li class="pure-menu menu-item-text">
@@ -93,6 +64,9 @@
         <li class="pure-menu menu-item-text">
           <a href="#setRenderer">setRenderer</a>
         </li>
+        <li class="pure-menu menu-item-text">
+          <a href="#setPreventDefaultBehaviour">setPreventDefaultBehaviour</a>
+        </li>
       </ul>
       <br><br>
     </div>
@@ -105,83 +79,8 @@
     </div>
 
     <div class="content">
-      <h2 id="_global_" class="content-subhead">_global_ Objects<a href="#_global_" class="content-link"></a></h2>
-      <h3 id="isAndroid" style="margin-top: 5%;">isAndroid</h3>
-      <p>
-        Flag tells whether currently running on Android devices.
-      </p>
-      <blockquote class="content-code">
-        if (isAndroid)<br>
-        => true when running on Android devices, false otherwise.
-      </blockquote>
-      <br>
-      <h3 id="isChrome">isChrome</h3>
-      <p>
-        Flag tells whether currently running on Google Chrome.
-      </p>
-      <blockquote class="content-code">
-        if (isChrome)<br>
-        => true when running on Chrome, false otherwise.
-      </blockquote>
-      <br>
-      <h3 id="isiOS">isiOS</h3>
-      <p>
-        Flag tells whether currently running on iOS devices.
-      </p>
-      <blockquote class="content-code">
-        if (isiOS)<br>
-        => true when running on iOS devices, false otherwise.
-      </blockquote>
-      <br>
-      <h3 id="isPreventDefaultEnabled">isPreventDefaultEnabled</h3>
-      <p>
-        Flag tells whether preventDefault will be triggered on browser events.
-      </p>
-      <blockquote class="content-code">
-        isPreventDefaultEnabled = true;<br>
-        => Turn this flag on to modify behaviour of touch, press and move events.
-      </blockquote>
-      <br>
-      <h3 id="isSP">isSP</h3>
-      <p>
-        Flag tells whether currently running on SmartPhone devices.
-      </p>
-      <blockquote class="content-code">
-        if (isSP)<br>
-        => true when running on Android or iOS devices, false otherwise.
-      </blockquote>
-      <br>
-      <h3 id="isTouchEventEnabled">isTouchEventEnabled</h3>
-      <p>
-        Flag tells if the touch event is enabled.
-      </p>
-      <blockquote class="content-code">
-        var isTouchEventEnabled = isSP;<br>
-        => by default this flag is set to be the same as isSP.
-      </blockquote>
-      <br>
-      <h3  id="userAgent">userAgent</h3>
-      <p>
-        Copy of the current running user agent.
-      </p>
-      <blockquote class="content-code">
-        var userAgent = navigator.userAgent;
-      </blockquote>
-      <br>
-      <h3 id="useWebWorker">useWebWorker</h3>
-      <p>
-        Flag tells whether enable Web Workers.
-      </p>
-      <blockquote class="content-code">
-        var useWebWorker = !isAndroid || isChrome;<br>
-        => Turn off Web Worker on Android native browser, allow it runs on Android Chrome.
-      </blockquote>
-      <br>
-
-      <hr>
-
       <h2 id="LwfLoader" class="content-subhead">Lwf Loader<a href="#LwfLoader" class="content-link"></a></h2>
-
+      
       <h3 id="constructor" style="margin-top: 5%;">LwfLoader Constructor
         <code class="simple" style="margin-left: 5%;">new LwfLoader()</code></h3>
       <p>
@@ -450,6 +349,20 @@
         </code>
       </pre>
       <br>
+
+      <h3 id="setPreventDefaultBehaviour" style="margin-top: 5%;">setPreventDefaultBehaviour
+        <code class="simple" style="margin-left: 5%;">setPreventDefaultBehaviour(boolean)</code></h3>
+      <p>
+        Manually sets preventDefault's behaviour.<br>
+      </p>
+
+      <blockquote class="content-code">
+        lwfLoader.setPreventDefaultBehaviour(false);<br>
+        //Disable preventDefault<br>
+      </blockquote>
+      <br>
+
+      <!-- Document ends here -->
     </div>
   </div>
 </div>
