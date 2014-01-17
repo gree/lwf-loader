@@ -9,8 +9,8 @@ This is the assistant tool for [LWF Library](https://github.com/gree/lwf).
 How to run?
 ------------
 1. Download the latest version of `lwf.js` from [LWF Repository](https://github.com/gree/lwf).
-2. Download [underscore.js](http://underscorejs.org/) or compatible library. 
-3. Include above files with `lwf-loader.js` and `lwf-util.js` to your project. 
+2. Download [underscore.js](http://underscorejs.org/) or compatible library.
+3. Include above files with `lwf-loader.js` to your project.
 4. Call loader function in your project.
 
 Please refer to [LWF demo page](http://gree.github.io/lwf-demo/) for samples and more information.
@@ -20,12 +20,11 @@ Structure
 ----------
 ```
 |-- lwf-loader
-|   |-- doc 
+|   |-- doc
 |       |-- Resource_Guideline.md
 |   |-- js
-|       |-- lwf-loader-all.min.js
 |       |-- lwf-loader.js
-|       |-- lwf-util.js
+|       |-- lwf-loader.min.js
 |   |-- README.md
 ```
 
@@ -36,17 +35,13 @@ Structure
 
 * **/lwf-loader/js/lwf-loader-all.min.js**
 
-  Minified version of `lwf-loader.js` with `lwf-util.js`. Closure compiler(SIMPLE_OPTIMIZATIONS) is applied for minification.
+  Minified version of `lwf-loader.js`. Closure compiler(SIMPLE_OPTIMIZATIONS) is applied for minification.
 
 
 * **/lwf-loader/js/lwf-loader.js**
 
-  Main implementation of lwf-loader. 
+  Main implementation of lwf-loader.
 
-
-* **/lwf-loader/js/lwf-util.js**
-
-  Utility helper for lwf-loader. 
 
 
 Documentation
