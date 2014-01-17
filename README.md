@@ -33,14 +33,14 @@ Structure
   Resource Guideline for assets that could be used with lwf-loader and LWF.
 
 
-* **/lwf-loader/js/lwf-loader-all.min.js**
-
-  Minified version of `lwf-loader.js`. Closure compiler(SIMPLE_OPTIMIZATIONS) is applied for minification.
-
-
 * **/lwf-loader/js/lwf-loader.js**
 
   Main implementation of lwf-loader.
+
+
+* **/lwf-loader/js/lwf-loader.min.js**
+
+  Minified version of `lwf-loader.js`. Closure compiler(SIMPLE_OPTIMIZATIONS) is applied for minification.
 
 
 
