@@ -316,6 +316,37 @@
   };
 
   /**
+   * Determine which renderer to use for current running environment
+   * All Android 4.x device will use css renderer except for Android Chrome
+   * Android 2.1 and 2.3.5 and so on will use css renderer to prevent misc bugs
+   * All iOS devices will run on canvas renderer
+   * @return {string}
+   */
+  LwfLoader.prototype.autoSelectRenderer_ = function() {
+    /** iOS 4 devices should use CSS renderer due to spec issue */
+    if (/iP(ad|hone|od).*OS 4/.test(userAgent)) {
+      return 'useWebkitCSSRenderer';
+    }
+
+    /** Android 2.1 does not work with Canvas, force to use CSS renderer */
+    /** Android 2.3.5 or higher 2.3 versions does not work properly on canvas */
+    if (/Android 2\.1/.test(userAgent) || /Android 2\.3\.[5-7]/.test(userAgent)) {
+      return 'useWebkitCSSRenderer';
+    }
+
+    /** Android 4.x devices are recommended to run with CSS renderer except for Chrome*/
+    if (/Android 4/.test(userAgent)) {
+      if (/Chrome/.test(userAgent)) {
+        return 'useCanvasRenderer';
+      } else {
+        return 'useWebkitCSSRenderer';
+      }
+    }
+
+    return 'useCanvasRenderer';
+  };
+
+  /**
    * Sets the LwfLoader display setting from input parameters.
    * @param {object} object array containing display related parameters
    */
@@ -816,7 +847,7 @@
 
     /** if renderer is not manually defined, auto-select the optimal renderer*/
     if (!this.getRenderer()) {
-      this.setRenderer(global.Utility.autoSelectRenderer());
+      this.setRenderer(this.autoSelectRenderer_());
     }
     var lwfRenderer = this.getRenderer();
 
