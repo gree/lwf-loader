@@ -361,9 +361,9 @@
     this.screenWidth = lwfDisplaySetting.screenWidth || this.screenWidth;
     this.screenHeight = lwfDisplaySetting.screenHeight || this.screenHeight;
     this.stageHAlign =
-      (lwfDisplaySetting.stageHAlign != null) ? lwfDisplaySetting.stageHAlign : this.stageHAlign;
+      (lwfDisplaySetting.stageHAlign !== null) ? lwfDisplaySetting.stageHAlign : this.stageHAlign;
     this.stageVAlign =
-      (lwfDisplaySetting.stageVAlign != null) ? lwfDisplaySetting.stageVAlign : this.stageVAlign;
+      (lwfDisplaySetting.stageVAlign !== null) ? lwfDisplaySetting.stageVAlign : this.stageVAlign;
     this.useLargeImage = lwfDisplaySetting.useLargeImage || this.useLargeImage;
   };
 
@@ -1138,12 +1138,13 @@
    */
   LwfLoader.prototype.requestLWF_ = function(lwf, lwfId, imageMap, privateData, myCallback) {
     var lwfInput = {};
+    var lwfParam = {};
+    var prefix = {};
 
     /** for LWFS environment, inherit parents' settings from window.testlwf_settings*/
     if (this.isLwfsEnvironment_()) {
-      var lwfParam = _.clone(window.testlwf_settings);
+      lwfParam = _.clone(window.testlwf_settings);
 
-      var prefix;
       if (lwfParam.prefix) {
         prefix = lwfParam.prefix + lwfId + '/_/';
       } else {
