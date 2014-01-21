@@ -360,10 +360,11 @@
     this.stageHeight = lwfDisplaySetting.stageHeight || this.stageHeight;
     this.screenWidth = lwfDisplaySetting.screenWidth || this.screenWidth;
     this.screenHeight = lwfDisplaySetting.screenHeight || this.screenHeight;
+
     this.stageHAlign =
-      (lwfDisplaySetting.stageHAlign !== null) ? lwfDisplaySetting.stageHAlign : this.stageHAlign;
+      (typeof lwfDisplaySetting.stageHAlign !== 'undefined') ? lwfDisplaySetting.stageHAlign : this.stageHAlign;
     this.stageVAlign =
-      (lwfDisplaySetting.stageVAlign !== null) ? lwfDisplaySetting.stageVAlign : this.stageVAlign;
+      (typeof lwfDisplaySetting.stageHAlign !== 'undefined') ? lwfDisplaySetting.stageVAlign : this.stageVAlign;
     this.useLargeImage = lwfDisplaySetting.useLargeImage || this.useLargeImage;
   };
 
