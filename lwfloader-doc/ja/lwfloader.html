@@ -67,6 +67,19 @@
         <li class="pure-menu menu-item-text">
           <a href="#setPreventDefaultBehaviour">setPreventDefaultBehaviour</a>
         </li>
+        <br>
+        <li class="pure-menu-selected menu-item-divided">
+          <a href="#resources">Assets Management</a>
+        </li>
+        <li class="pure-menu menu-item-text">
+          <a href="#prefix">prefix</a>
+        </li>
+        <li class="pure-menu menu-item-text">
+          <a href="#imagemap">imageMap</a>
+        </li>
+        <li class="pure-menu menu-item-text">
+          <a href="#lwfmap">lwfMap</a>
+        </li>
       </ul>
       <br><br>
     </div>
@@ -358,7 +371,75 @@
         //様々なイベントに対してpreventDefaultを無効にします。<br>
       </blockquote>
       <br>
+      <br>
+      <hr>       
+      <!-- Description of placing resources  -->
+      <h2 id="resources" class="content-subhead">Assets Management<a href="#resources" class="content-link"></a></h2>
 
+      <h3 id="prefix" style="margin-top: 5%;">
+      prefix
+        </h3>
+      <p>
+        アセットディレクトリの`prefix`です、デフォルトで指定されたパスからアセットを読み込みます。<br>
+      </p>
+
+      <blockquote class="content-code">
+        prefix: LWF素材全般のprefix。 <br>
+        imagePrefix: 画像素材のprefix, 未指定の場合はprefixの値が代わりに使われる。
+        <br>
+      </blockquote>
+      <br>
+
+      <h3 id="imagemap" style="margin-top: 5%;">
+      imageMap
+        </h3>
+      <p>
+        デフォルトのルールに従わずに直接各リンケージ名に対してカスタムパスを指定できます。<br>
+      </p>
+
+      <blockquote class="content-code">
+        var setting = {<br>
+        &nbsp;&nbsp;imageMap: {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;"lwf_foo.png": "/IMG_PATH/foo.png",<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;"misc_item_1.png": "/IMG_PATH/1.png"<br>
+        &nbsp;&nbsp;};<br>
+        };<br>
+        var lwfLoader = new LwfLoader(); <br>
+        lwfLoader.playLWF(element, setting); <br>
+      </blockquote>
+
+      <p>
+        また画像パスを取得するための関数、getImageMapper()を直接overrideして使う方法もあります。
+      </p>
+
+      <blockquote class="content-code">
+        var lwfLoader = new LwfLoader();<br>
+        lwfLoader.getImageMapper_ = function() {<br>
+        &nbsp;&nbsp;return function(imageId) {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;//Your custom function goes here<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;return pimageId.replace(/REGEX/, 'IMG_PATH');<br>
+        &nbsp;&nbsp;};<br>
+        }
+      </blockquote>
+
+      <br>
+      <h3 id="lwfmap" style="margin-top: 5%;">lwfMap</h3>
+      <p>
+        デフォルトのルールに従わずに直接各LWF素材に対してカスタムパスを指定できます。<br>
+      </p>
+
+      <blockquote class="content-code">
+        var setting = {<br>
+        &nbsp;&nbsp;//lwf_sample_aを呼び出す場合、指定されたパスから取得するようになります<br>
+        &nbsp;&nbsp;lwfMap: {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;"lwf_sample_a": "/CUSTOM_PATH/a.lwf",<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;"lwf_sample_b": "/CUSTOM_PATH/b.lwf"<br>
+        &nbsp;&nbsp;};<br>
+        };<br>
+        var lwfLoader = new LwfLoader(); <br>
+        lwfLoader.playLWF(element, setting); <br>
+      </blockquote>
+      <br>
     <!-- Document ends here -->
     </div>
   </div>

@@ -67,6 +67,19 @@
         <li class="pure-menu menu-item-text">
           <a href="#setPreventDefaultBehaviour">setPreventDefaultBehaviour</a>
         </li>
+        <br>
+        <li class="pure-menu-selected menu-item-divided">
+          <a href="#resources">Assets Management</a>
+        </li>
+        <li class="pure-menu menu-item-text">
+          <a href="#prefix">prefix</a>
+        </li>
+        <li class="pure-menu menu-item-text">
+          <a href="#imagemap">imageMap</a>
+        </li>
+        <li class="pure-menu menu-item-text">
+          <a href="#lwfmap">lwfMap</a>
+        </li>
       </ul>
       <br><br>
     </div>
@@ -359,6 +372,76 @@
       <blockquote class="content-code">
         lwfLoader.setPreventDefaultBehaviour(false);<br>
         //Disable preventDefault<br>
+      </blockquote>
+      <br>
+      <br>
+      <hr>  
+      <!-- Description of placing resources  -->
+      <h2 id="resources" class="content-subhead">Assets Management<a href="#resources" class="content-link"></a></h2>
+
+      <h3 id="prefix" style="margin-top: 5%;">
+      prefix
+        </h3>
+      <p>
+        Prefix of resource directory. LWF Loader will attempt to retrieve resources with the given prefix.<br>
+      </p>
+
+      <blockquote class="content-code">
+        prefix: prefix of LWF resources. <br>
+        imagePrefix: prefix for images, 'prefix' will be copied if empty.
+        <br>
+      </blockquote>
+      <br>
+
+      <h3 id="imagemap" style="margin-top: 5%;">
+      imageMap
+        </h3>
+      <p>
+        Set imageMap to manually link resource image to the specified custom path.<br>
+      </p>
+
+      <blockquote class="content-code">
+        var setting = {<br>
+        &nbsp;&nbsp;imageMap: {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;"lwf_foo.png": "/IMG_PATH/foo.png",<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;"misc_item_1.png": "/IMG_PATH/1.png"<br>
+        &nbsp;&nbsp;};<br>
+        };<br>
+        var lwfLoader = new LwfLoader(); <br>
+        lwfLoader.playLWF(element, setting); <br>
+      </blockquote>
+
+      <p>
+        Alternatively, users can override getImageMapper() function to specify their custom image paths.
+      </p>
+
+      <blockquote class="content-code">
+        var lwfLoader = new LwfLoader();<br>
+        lwfLoader.getImageMapper_ = function() {<br>
+        &nbsp;&nbsp;return function(imageId) {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;//Your custom function goes here<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;return pimageId.replace(/REGEX/, 'IMG_PATH');<br>
+        &nbsp;&nbsp;};<br>
+        }
+      </blockquote>
+
+      <br>
+      <h3 id="lwfmap" style="margin-top: 5%;">lwfMap</h3>
+      <p>
+        Set lwfMap to manually link lwf asset to the specified custom path.<br>
+        Useful while child LWFs to be included are placed not in the same directory.<br>
+      </p>
+
+      <blockquote class="content-code">
+        var setting = {<br>
+        &nbsp;&nbsp;//loading lwf_sample_x will retrieve resource from the given path<br>
+        &nbsp;&nbsp;lwfMap: {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;"lwf_sample_a": "/CUSTOM_PATH/a.lwf",<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;"lwf_sample_b": "/CUSTOM_PATH/b.lwf"<br>
+        &nbsp;&nbsp;};<br>
+        };<br>
+        var lwfLoader = new LwfLoader(); <br>
+        lwfLoader.playLWF(element, setting); <br>
       </blockquote>
       <br>
 
