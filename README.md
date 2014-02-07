@@ -20,18 +20,11 @@ Structure
 ----------
 ```
 |-- lwf-loader
-|   |-- doc
-|       |-- Resource_Guideline.md
 |   |-- js
 |       |-- lwf-loader.js
 |       |-- lwf-loader.min.js
 |   |-- README.md
 ```
-
-* **/lwf-loader/doc/Resource_Guideline.md**
-
-  Resource Guideline for assets that could be used with lwf-loader and LWF.
-
 
 * **/lwf-loader/js/lwf-loader.js**
 
@@ -47,3 +40,5 @@ Structure
 Documentation
 --------------
 [LWF Loader Document](http://gree.github.io/lwf-loader/lwfloader-doc/lwfloader.html)
+
+[LWF Loader 日本語版ドキュメント](http://gree.github.io/lwf-loader/lwfloader-doc/ja/lwfloader.html)
