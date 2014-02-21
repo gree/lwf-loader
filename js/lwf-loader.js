@@ -1194,7 +1194,13 @@
       }
 
       lwfParam.onload = function(childLwf) {
-        var loader = this.privateData.lwfLoader;
+        var loader = {};
+        if (_.isUndefined(this.privateData) || _.isUndefined(this.privateData.lwfLoader)) {
+          loader = new LwfLoader();
+        } else {
+          loader = this.privateData.lwfLoader;
+        }
+
         if (!childLwf) {
           loader.handleLoadError_(this);
           return myCallback(this.error, childLwf);
