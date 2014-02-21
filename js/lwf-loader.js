@@ -98,6 +98,7 @@
    * @property {int} stageHAlign flag tells how the display area will be aligned horizontally
    * @property {int} stageVAlign flag tells how the display area will be aligned vertically
    * @property {boolean} useLargeImage whether using high-resolution images
+   * @property {boolean} useWebGL whether using WebGL Renderer when it is available
    * @property {boolean} isPreventDefaultEnabled flag tells whether enable preventDefault
    * @return {*}
    * @constructor
@@ -120,6 +121,7 @@
     this.stageHAlign = -1; // -1: left, 0: center, 1: right
     this.stageVAlign = -1; // -1: top, 0: center, 1: bottom
     this.useLargeImage = false;
+    this.useWebGL = false;
 
     /** preventDefault() might cause unstable Android bugs */
     this.isPreventDefaultEnabled = isiOS || /Android *(4|3)\..*/.test(userAgent);
@@ -323,6 +325,21 @@
    * @return {string}
    */
   LwfLoader.prototype.autoSelectRenderer_ = function() {
+
+    if (this.useWebGL) {
+      /** detects if current environment is WebGL capable*/
+      var cvs = document.createElement('canvas');
+      var contextNames = ['webgl','experimental-webgl','moz-webgl','webkit-3d'];
+      var ctx;
+
+      for (var i = 0; i < contextNames.length; i++) {
+        ctx = cvs.getContext(contextNames[i]);
+        if (ctx) {
+          return 'useWebGLRenderer';
+        }
+      }
+    }
+
     /** iOS 4 devices should use CSS renderer due to spec issue */
     if (/iP(ad|hone|od).*OS 4/.test(userAgent)) {
       return 'useWebkitCSSRenderer';
