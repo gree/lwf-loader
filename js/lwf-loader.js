@@ -490,7 +490,7 @@
       devicePixelRatio = 1;
     }
 
-    // set DPR to 2 when runnig  WebGLRenderer on ARROWS F-series device
+    /* set DPR to 2 when runnig  WebGLRenderer on ARROWS F-series device */
     if (loader.getRenderer() === 'useWebGLRenderer' && / F-/.test(userAgent)) {
       devicePixelRatio = 2; 
     }
