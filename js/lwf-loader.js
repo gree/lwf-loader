@@ -602,6 +602,9 @@
               lwf.fitForHeight(stage.width, stage.height);
             }
           }
+          if (loader.getRenderer() === "useWebkitCSSRenderer") {
+            lwf.setTextScale(window.devicePixelRatio);
+          }
 
           lwf.property.moveTo(0, 0);
 
