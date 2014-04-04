@@ -99,6 +99,7 @@
    * @property {int} stageVAlign flag tells how the display area will be aligned vertically
    * @property {boolean} useLargeImage whether using high-resolution images
    * @property {boolean} useWebGL whether using WebGL Renderer when it is available
+   * @property {boolean} useAbsImagePath set true to skip imagePrefix for child LWFs
    * @property {boolean} isPreventDefaultEnabled flag tells whether enable preventDefault
    * @return {*}
    * @constructor
@@ -122,6 +123,7 @@
     this.stageVAlign = -1; // -1: top, 0: center, 1: bottom
     this.useLargeImage = false;
     this.useWebGL = false;
+    this.useAbsImagePath = false;
 
     /** preventDefault() might cause unstable Android bugs */
     this.isPreventDefaultEnabled = isiOS || /Android *(4|3)\..*/.test(userAgent);
@@ -993,6 +995,7 @@
       myLwfParam.lwf = myLwfParam.name;
     }
 
+    /** copy external setting property into lwfParam */
     if (_.isObject(lwfParam)) {
       _.extend(myLwfParam, lwfParam);
     }
@@ -1232,7 +1235,12 @@
       var parentLwfParam = myLoaderData.setting;
       lwfParam = _.clone(parentLwfParam); /* inherit from parent LWF */
 
-      /* child LWFs are rendered using their own size. */
+      /** set imagePrefix to null if manual flag is on */
+      if (this.useAbsImagePath) {
+        lwfParam.imagePrefix = "";
+      }
+
+      /** child LWFs are rendered using their own size. */
       lwfParam.fitForHeight = lwfParam.fitForWidth = false;
       myLoaderData.setting = lwfParam;
 
