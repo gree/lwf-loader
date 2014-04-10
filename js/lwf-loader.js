@@ -497,6 +497,12 @@
       devicePixelRatio = 2; 
     }
 
+    /* tune opacity for SH devices using Android 2.3.5-2.3.7 with WebkitCSS Renderer */
+    if (loader.getRenderer() === 'useWebkitCSSRenderer' && /Android 2\.3\.[5-7]/.test(userAgent) 
+      && /SH/.test(userAgent)) {
+      this.stage.style.opacity = 0.9999;
+    }
+
     /**
      * loading handler, set the required information for LWF files
      */
