@@ -798,7 +798,7 @@
       }
     };
 
-    lwfLoader.timers[privData.lwfLoaderUid] = global.requestAnimationFrame(onExec);global.requestAnimationFrame(onExec);
+    lwfLoader.timers[privData.lwfLoaderUid] = global.requestAnimationFrame(onExec);
 
     /** event handling */
     if (isTouchEventEnabled) {
