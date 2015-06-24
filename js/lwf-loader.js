@@ -26,6 +26,7 @@
   var debugInfoElementId = 0;
 
   if (typeof global.performance === 'undefined') {
+    /** @type {Object} */
     global.performance = {};
   }
   global.performance.now = global.performance.now ||
