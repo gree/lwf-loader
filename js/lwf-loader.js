@@ -312,7 +312,7 @@
   LwfLoader.prototype.getLwfPath_ = function(lwfId) {
     var path;
 
-    var myLwfId = lwfId;
+    var myLwfId = lwfId.replace(/\.lwf$/i, '');
     if (lwfId.indexOf('/') >= 0) {
       myLwfId = lwfId.substring(lwfId.lastIndexOf('/') + 1);
     }
@@ -1132,6 +1132,8 @@
       myLwfParam.prefix = lwfPath.slice(0, lwfPath.lastIndexOf('/') + 1);
       delete myLwfParam.imagePrefix;
       myLwfParam.lwf = lwfPath.slice(lwfPath.lastIndexOf('/') + 1);
+    } else {
+      myLwfParam.lwf = (this.getLwfMapper_(myLoaderData))(myLwfParam.lwf);
     }
 
     var pos = {};
