@@ -965,8 +965,8 @@
     /** web worker setting, only available on Chrome or non-Android devices*/
     myLwfParam.worker = useWebWorker;
 
-    /** handle buggy css behaviour in certain devices */
-    if (isAndroid && / (SC-0|Galaxy Nexus|SH-0)/.test(userAgent) && lwfRenderer === 'useWebkitCSSRenderer') {
+    /** handle buggy clearRect in certain devices */
+    if (isAndroid && / (SC-0|Galaxy Nexus|SH-0|SCL21)/.test(userAgent)) {
       myLwfParam.quirkyClearRect = true;
     }
 
