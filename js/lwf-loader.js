@@ -942,7 +942,7 @@
     myLwfParam.onload = this.onLoad;
 
     /** background color setting*/
-    if (this.backgroundColor) {
+    if (this.backgroundColor !== null) {
       myLwfParam.setBackgroundColor = this.backgroundColor;
     } else {
       myLwfParam.useBackgroundColor = true;
