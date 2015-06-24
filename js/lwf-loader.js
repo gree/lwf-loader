@@ -606,9 +606,6 @@
           }
 
           /** setup lwf stage */
-          stage.width = loader.stageWidth ? loader.stageWidth : stage.width;
-          stage.height = loader.stageHeight ? loader.stageHeight : stage.height;
-
           stageEventReceiver.style.left = stage.style.left = offsetX + 'px';
           stageEventReceiver.style.top = stage.style.top = offsetY + 'px';
           stageEventReceiver.style.width = stage.style.width = stageWidth + 'px';
