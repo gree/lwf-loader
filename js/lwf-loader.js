@@ -43,6 +43,12 @@
     global.oRequestAnimationFrame ||
     global.msRequestAnimationFrame;
 
+  global.cancelAnimationFrame = global.cancelAnimationFrame ||
+    global.webkitCancelAnimationFrame ||
+    global.mozCancelAnimationFrame ||
+    global.oCancelAnimationFrame ||
+    global.msCancelAnimationFrame;
+
   /** apply polyfills for iOS6 devices */
   if (global.requestAnimationFrame === undefined || /iP(ad|hone|od).*OS 6/.test(userAgent)) {
     (function() {
@@ -56,6 +62,10 @@
           t0 = global.performance.now();
           myCallback();
         }, d);
+      };
+
+      global.cancelAnimationFrame = function(timer) {
+        return global.clearTimeout(timer);
       };
     })();
   }
@@ -106,6 +116,9 @@
    */
   function LwfLoader() {
     /** public members */
+    this.lwfInstances = {};
+    this.lwfLoaderUid = 0;
+    this.timers = {};
     this.initializeHooks = [];
     this.requests = [];
     this.pausing = false;
@@ -447,6 +460,11 @@
    * @param {object} lwf LWF root instance
    */
   LwfLoader.prototype.onLoad = function(lwf) {
+    var privData = lwf.privateData;
+    var lwfLoader = privData.lwfLoader;
+    lwfLoader.lwfInstances[lwfLoader.lwfLoaderUid] = lwf;
+    privData.loaderUid = lwfLoader.lwfLoaderUid++;
+
     var setting = this;
     var privateData = setting.privateData;
     var myLoaderData = privateData._loaderData;
@@ -494,11 +512,11 @@
 
     /* set DPR to 2 when runnig  WebGLRenderer on ARROWS F-series device */
     if (loader.getRenderer() === 'useWebGLRenderer' && / F-/.test(userAgent)) {
-      devicePixelRatio = 2; 
+      devicePixelRatio = 2;
     }
 
     /* tune opacity for SH devices using Android 2.3.5-2.3.7 with WebkitCSS Renderer */
-    if (loader.getRenderer() === 'useWebkitCSSRenderer' && /Android 2\.3\.[5-7]/.test(userAgent) 
+    if (loader.getRenderer() === 'useWebkitCSSRenderer' && /Android 2\.3\.[5-7]/.test(userAgent)
       && /SH/.test(userAgent)) {
       this.stage.style.opacity = 0.9999;
     }
@@ -640,7 +658,9 @@
           lwf.render();
         }
 
-        global.requestAnimationFrame(onExec);
+        var privData = lwf.privateData;
+        privData.lwfLoader.timers[privData.lwfLoaderUid] = global.requestAnimationFrame(onExec);
+
         if (execCount % 60 === 0) {
           fps_num60 = Math.round(60000.0 / (t1 - t0_60));
           t0_60 = t1;
@@ -778,7 +798,7 @@
       }
     };
 
-    global.requestAnimationFrame(onExec);
+    lwfLoader.timers[privData.lwfLoaderUid] = global.requestAnimationFrame(onExec);
 
     /** event handling */
     if (isTouchEventEnabled) {
@@ -1366,6 +1386,14 @@
     var cache = LWF.ResourceCache.get();
     cache.loadLWFs(this.requests, myCallback);
     this.requests = [];
+  };
+
+  LwfLoader.prototype.unloadLWF = function(lwf) {
+    var loaderUid = lwf.privateData.loaderUid;
+    this.lwfInstances[loaderUid] = null;
+    global.cancelAnimationFrame(this.timers[loaderUid]);
+    this.timers[loaderUid] = null;
+    lwf.destroy();
   };
 
   /** set lwf-loader parameters */
