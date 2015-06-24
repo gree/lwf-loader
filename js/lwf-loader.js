@@ -25,7 +25,6 @@
   /** For displaying debug FPS information */
   var debugInfoElementId = 0;
 
-  /** @type {Object} */
   if (typeof global.performance === 'undefined') {
     global.performance = {};
   }
