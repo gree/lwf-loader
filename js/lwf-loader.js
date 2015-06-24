@@ -569,24 +569,20 @@
           stageWidth = imageWidth;
           stageHeight = imageHeight;
 
-          if (setting.fitForWidth) {
+          if (loader.fitToScreen) {
+            if (screenRatio < imageRatio) {
+               stageWidth = screenWidth;
+               stageHeight = imageHeight * (screenWidth / imageWidth);
+             } else {
+               stageWidth = imageWidth * (screenHeight / imageHeight);
+               stageHeight = screenHeight;
+             }
+          } else if (setting.fitForWidth) {
             stageWidth = Math.round(screenWidth);
             stageHeight = Math.round(screenWidth * imageHeight / imageWidth);
           } else if (setting.fitForHeight) {
             stageWidth = Math.round(screenHeight * imageWidth / imageHeight);
             stageHeight = Math.round(screenHeight);
-          } else {
-            if (myLoaderData.fitToScreen) {
-              if (screenRatio > imageRatio) {
-
-                stageWidth = imageWidth * (screenHeight / imageHeight);
-                stageHeight = screenHeight;
-
-              } else {
-                stageWidth = screenWidth;
-                stageHeight = imageHeight * (screenWidth / imageWidth);
-              }
-            }
           }
 
           /** offset setting inside the stage */
@@ -621,26 +617,21 @@
           stageEventReceiver.width = stage.width = Math.floor(stageWidth * devicePixelRatio);
           stageEventReceiver.height = stage.height = Math.floor(stageHeight * devicePixelRatio);
 
-          if (myLoaderData.fitToScreen) {
+          lwf.property.clear();
+          if (loader.fitToScreen) {
             if (screenRatio < imageRatio) {
               stageScale = stageWidth / stage.width;
-              lwf.property.clear();
               lwf.fitForWidth(stage.width, stage.height);
             } else {
               stageScale = stageHeight / stage.height;
-              lwf.property.clear();
               lwf.fitForHeight(stage.width, stage.height);
             }
+          } else if (setting.fitForWidth) {
+            stageScale = stageWidth / stage.width;
+            lwf.fitForWidth(stage.width, stage.height);
           } else {
-            if (setting.fitForWidth) {
-              stageScale = stageWidth / stage.width;
-              lwf.property.clear();
-              lwf.fitForWidth(stage.width, stage.height);
-            } else {
-              stageScale = stageHeight / stage.height;
-              lwf.property.clear();
-              lwf.fitForHeight(stage.width, stage.height);
-            }
+            stageScale = stageHeight / stage.height;
+            lwf.fitForHeight(stage.width, stage.height);
           }
           if (loader.getRenderer() === "useWebkitCSSRenderer") {
             lwf.setTextScale(window.devicePixelRatio);
@@ -652,7 +643,7 @@
           if (loader.displayDivId) {
             var windowDiv = document.getElementById(loader.displayDivId);
 
-            if (myLoaderData.fitToScreen) {
+            if (loader.fitToScreen) {
               windowDiv.style.width = screenWidth + 'px';
               windowDiv.style.height = screenHeight + 'px';
             } else {
