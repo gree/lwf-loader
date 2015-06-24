@@ -94,6 +94,7 @@
    * @property {object} initializeHooks Hook function lists
    * @property {object} requests requests function lists
    * @property {boolean} pausing set true to pause animation
+   * @property {boolean} gotoRewind set true to playback from the beginning
    * @property {int} loadingCounter counter shows the loading progress
    * @property {boolean} debug whether displays debug information
    * @property {int} currentFPS current running FPS
@@ -122,6 +123,7 @@
     this.initializeHooks = [];
     this.requests = [];
     this.pausing = false;
+    this.gotoRewind = false;
     this.loadingCounter = 0;
     this.debug = false;
     this.backgroundColor = null;
@@ -255,6 +257,13 @@
    */
   LwfLoader.prototype.resume = function() {
     this.pausing = false;
+  };
+
+  /**
+   * playback LWF from the beginning.
+   */
+  LwfLoader.prototype.rewind = function() {
+    this.gotoRewind = true;
   };
 
   /**
@@ -528,6 +537,11 @@
       try {
         if (!lwf) {
           return;
+        }
+
+        if (loader.gotoRewind) {
+          loader.gotoRewind = false;
+          lwf.init();
         }
 
         var imageWidth = loader.stageWidth ? loader.stageWidth : lwf.width;
