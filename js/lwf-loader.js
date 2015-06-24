@@ -111,6 +111,7 @@
    * @property {boolean} useLargeImage whether using high-resolution images
    * @property {boolean} useWebGL whether using WebGL Renderer when it is available
    * @property {boolean} useAbsImagePath set true to skip imagePrefix for child LWFs
+   * @property {boolean} useDefaultImgPath always use the same path as LWF file when turned on
    * @property {boolean} isPreventDefaultEnabled flag tells whether enable preventDefault
    * @return {*}
    * @constructor
@@ -139,6 +140,7 @@
     this.useLargeImage = false;
     this.useWebGL = false;
     this.useAbsImagePath = false;
+    this.useDefaultImgPath = false;
 
     /** preventDefault() might cause unstable Android bugs */
     this.isPreventDefaultEnabled = isiOS || /Android *(4|3)\..*/.test(userAgent);
@@ -1281,6 +1283,8 @@
       /** set imagePrefix to null if manual flag is on */
       if (this.useAbsImagePath) {
         lwfParam.imagePrefix = "";
+      } else if (this.useDefaultImgPath) {
+        lwfParam.imagePrefix = lwfId + '/';
       }
 
       /** child LWFs are rendered using their own size. */
