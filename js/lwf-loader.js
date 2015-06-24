@@ -1410,9 +1410,9 @@
 
   LwfLoader.prototype.unloadLWF = function(lwf) {
     var loaderUid = lwf.privateData.loaderUid;
-    this.lwfInstances[loaderUid] = null;
+    delete this.lwfInstances[loaderUid];
     global.cancelAnimationFrame(this.timers[loaderUid]);
-    this.timers[loaderUid] = null;
+    delete this.timers[loaderUid];
     lwf.destroy();
   };
 
