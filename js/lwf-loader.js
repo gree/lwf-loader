@@ -659,7 +659,7 @@
         }
 
         var privData = lwf.privateData;
-        privData.lwfLoader.timers[privData.lwfLoaderUid] = global.requestAnimationFrame(onExec);
+        privData.lwfLoader.timers[privData.loaderUid] = global.requestAnimationFrame(onExec);
 
         if (execCount % 60 === 0) {
           fps_num60 = Math.round(60000.0 / (t1 - t0_60));
@@ -798,7 +798,7 @@
       }
     };
 
-    lwfLoader.timers[privData.lwfLoaderUid] = global.requestAnimationFrame(onExec);
+    lwfLoader.timers[privData.loaderUid] = global.requestAnimationFrame(onExec);
 
     /** event handling */
     if (isTouchEventEnabled) {
