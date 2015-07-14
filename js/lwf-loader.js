@@ -45,6 +45,7 @@
 
   global.cancelAnimationFrame = global.cancelAnimationFrame ||
     global.webkitCancelAnimationFrame ||
+    global.webkitCancelRequestAnimationFrame ||
     global.mozCancelAnimationFrame ||
     global.oCancelAnimationFrame ||
     global.msCancelAnimationFrame;
@@ -63,7 +64,11 @@
           myCallback();
         }, d);
       };
+    })();
+  }
 
+  if (global.cancelAnimationFrame === undefined || /iP(ad|hone|od).*OS 6/.test(userAgent)) {
+    (function() {
       global.cancelAnimationFrame = function(timer) {
         return global.clearTimeout(timer);
       };
